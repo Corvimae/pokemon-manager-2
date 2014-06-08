@@ -1,0 +1,120 @@
+<?php $__env->startSection('title', 'Pokemon Viewer'); ?>
+<?php $__env->startSection('includes'); ?>
+	<link rel=stylesheet type='text/css' href='/css/select2.css' />
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('script'); ?>
+	<script src="/js/typeahead.bundle.js"></script>
+	<script src="/js/select2.min.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$(".pkmn-record-shell").click(function(ev) {
+				window.location = "/pokemon/" + $(this).attr("data-id");
+			});
+
+			var classes = new Bloodhound({
+			  datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.name); },
+			  queryTokenizer: Bloodhound.tokenizers.whitespace,
+			  local: [
+			  <?php foreach(TrainerClassDefinition::all() as $n): ?>
+			    { name: '<?php echo $n->name; ?>', id:'<?php echo $n->id; ?>' },
+			  <?php endforeach; ?>
+			  ]
+			});	
+
+			classes.initialize();
+
+			var selClass;
+
+			$(".class-name-input").typeahead({autoselect: true}, {
+			  displayKey: 'name',
+			  source: classes.ttAdapter()
+			}).on('typeahead:selected', function (obj, datum) {
+			    selClass = datum;
+			});
+
+			$("#class-add").click(function() {
+				if(selClass == undefined) return;
+				$.getJSON("/api/v1/trainer/<?php echo $trainer->id; ?>/class/add/" + selClass.id, function(data) {
+					location.reload();
+				});
+			});
+			
+			$("#campaignSelector").select2({
+				placeholder: 'Search for a Campaign',
+				minimumInputLength: 5,
+				ajax: {
+					url: '/api/v1/campaign/search',
+					data: function(term, page) {
+						return {
+							value: term
+						}
+					}, 
+					results: function(data, page) {
+						return  {results: data};
+					}
+				}, 
+				formatResult: campaignFormatResult,
+				formatSelection: campaignFormatSelection,
+				initSelection: function (element, callback) {
+			        var data = {id: <?php echo $trainer->campaign()->id; ?>, name: '<?php echo $trainer->campaign()->name; ?>'};
+			        console.log(data);
+			        callback(data);
+			    }
+			});
+			
+			$("#campaignSelector").select2('val', '<?php echo $trainer->campaign()->name; ?>');
+			
+			$("#campaignSelector").on('select2-selecting', function(e) {
+				$.getJSON('/api/v1/trainer/<?php echo $trainer->id; ?>/campaign/update/' + e.val);
+			});
+						
+			
+			function campaignFormatResult(item) {
+				var markup = item.name;
+				return markup;
+			}
+			
+			function campaignFormatSelection(item) {
+				return item.name;
+			}
+			
+			
+		});
+		
+		
+	</script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
+	<div class="pkmn-name"><div class="user-title"><?php echo $trainer->name; ?></div></div>
+	<div class="stat-row"><div class="row-title"><?php echo $trainer->name; ?> has <?php echo count($trainer->pokemon()->get()); ?> Pokemon (<?php echo count($trainer->pokemon()->where('active', true)->get()); ?> active).</div></div>
+	<?php if(Auth::user()->isSpecificGM($trainer->primaryCampaign())): ?> 
+	<div class="stat-row"><div class="row-title">Trainer ID</div><div class="row-content"><?php echo $trainer->id; ?></div></div>
+	<?php endif; ?>
+
+	<div class="stat-row"><div class="row-title">Campaign</div><div class="row-content"><hidden id="campaignSelector"></div></div>
+
+	<div class="pkmn-records trainer-pkmn-record" data-id="0">
+		<div class="stat-row header-row"><div class="row-title">Pokemon</div></div>
+		<?php foreach($trainer->pokemon()->get() as $p): ?>
+			<div class="pkmn-record-shell" data-id="<?php echo $p->id; ?>"><div class="pkmn-record-shell-inner">
+					<img class="pkmn-sprite" src="<?php echo $p->species()->sprite(); ?>">
+					<div class="pkmn-record-title"><?php echo $p->name; ?></div>
+					<div class="pkmn-record-desc"><?php if(!$p->hidden): ?>Lv. <?php echo $p->level(); ?> <?php endif; ?> <?php echo $p->species()->name; ?></div>
+					<div class="pkmn-record-delete">&times;</div>
+			</div></div>
+		<?php endforeach; ?>
+	</div>
+	<?php foreach($trainer->classes()->get() as $c): ?> 
+		<div class="stat-row header-row"><div class="row-title"><?php echo $c->definition()->name; ?></div></div>
+	<?php endforeach; ?>
+
+	<div class="stat-row header-row trainer-record-add">
+		<div class="row-title">Add Class</div>
+		<div class="row-content">
+			<input type="text" class="stat-input class-name-input ability-input" id="class-add-input">
+			<button class="trainer-submit" id="class-add">Add</button>
+		</div>
+	</div>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -1,0 +1,132 @@
+<?php $__env->startSection('title', 'Pokemon Viewer'); ?>
+<?php $__env->startSection('script'); ?>
+	<script src="/js/jquery-ui-1.10.4.custom.min.js"></script>
+	<script src="/js/knockout-sortable.js"></script>
+	<script type="text/javascript">
+		$(function() {
+
+			$(".trainer-name").click(function(ev) {
+				window.location = "/trainer/" + $(this).parents(".pkmn-records").attr("data-id");
+			});
+			$(".pkmn-record-shell").click(function(ev) {
+				if(ev.ctrlKey) {
+					window.open( "/pokemon/" + $(this).attr("data-id"), '_blank');
+				} else {
+					window.location = "/pokemon/" + $(this).attr("data-id");
+				}
+			});
+
+			$(".pkmn-record-add").click(function() {
+				window.location = "/pokemon/new";
+			});
+
+			$(".trainer-submit").click(function(ev) {
+				$.getJSON("/api/v1/trainer/add/" + $(".trainer-name-input").val(), function(data) {
+					window.location = "/";
+				});
+			});
+
+			
+			function Pokemon(id, species, name, sprite, level) {
+				return {id: id, species: species, name: name, sprite: sprite, level: level};
+			}
+			
+			function mainVM() {
+				var self = this;
+				
+				self.trainerList = ko.observableArray([]);
+				<?php foreach($user->trainers()->get() as $t): ?>
+					var nobj = {id: <?php echo $t->id; ?>, name: "<?php echo $t->name; ?>", pokemon: ko.observableArray([])};
+					<?php foreach($t->pokemon()->get() as $p): ?>
+						nobj.pokemon.push(new Pokemon(<?php echo $p->id; ?>, "<?php echo $p->species()->name; ?>", "<?php echo $p->name; ?>", "<?php echo $p->species()->sprite(); ?>", <?php echo $p->hidden ? -1 : $p->level(); ?>));
+					<?php endforeach; ?>
+					self.trainerList.push(nobj);
+				<?php endforeach; ?>
+				
+				self.unassignedList = ko.observableArray([]);
+				<?php foreach($user->unassignedPokemon()->get() as $p): ?>
+					self.unassignedList.push(new Pokemon(<?php echo $p->id; ?>, "<?php echo $p->species()->name; ?>", "<?php echo $p->name; ?>", "<?php echo $p->species()->sprite(); ?>", <?php echo $p->hidden ? -1 : $p->level(); ?>));
+				<?php endforeach; ?>
+					
+				self.displayLevel = function(row) {
+					if(row.level == -1) return row.species;
+					return 'Lv. ' + row.level + ' ' + row.species;
+				}
+				
+				self.processSort = function(arg) {
+					var outstr = "";
+					for(var p in arg.targetParent()) {
+						outstr += arg.targetParent()[p].id + ",";
+					}
+					outstr = outstr.substr(0, outstr.length - 1);
+					var t_id = $(this).parent().attr("data-id");
+					$.getJSON("/api/v1/pokemon/" + arg.item.id + "/update/trainer/" + t_id, function(data) {
+						$.getJSON("/api/v1/trainer/" + t_id + "/pokemon/sort/" + outstr);
+					});
+				}
+				
+				self.deletePokemon = function(parent, row) {
+					parent.pokemon.remove(row);
+					$.getJSON("/api/v1/pokemon/" + row.id + "/delete");
+				}
+				
+				self.deleteUnassignedPokemon = function(row) {
+					self.unassignedList.remove(row);
+					$.getJSON("/api/v1/pokemon/" + row.id + "/delete");
+				}
+				
+			}
+			
+			ko.applyBindings(new mainVM());
+		});
+	</script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
+	<div class="motd"><?php echo file_get_contents('../motd.txt');; ?></div>
+	<div class="pkmn-name"><div class="user-title">Hello, <?php echo $user->username; ?></div></div>
+	<?php if($user->isAdministrator()): ?>
+		<div class="stat-row"><div class="row-title">You are an administrator.</div></div>
+	<?php elseif($user->isGM()): ?>
+		<div class="stat-row"><div class="row-title">You are a GM.</div></div>
+	<?php endif; ?>
+	<div class="stat-row"><div class="row-title">You have <?php echo count($user->pokemon()->get()); ?> Pokemon across <?php echo count($user->trainers()->get()); ?> Trainers.</div></div>
+	
+	<!-- ko foreach: $root.trainerList -->
+		<div class="pkmn-records" data-bind="attr: {'data-id': id }">
+			<div class="stat-row header-row trainer-name"><div class="row-title" data-bind="text: name"></div></div>
+			 <div data-bind="sortable: {data: pokemon, afterMove: $root.processSort}">
+				<div class="pkmn-record-shell" data-bind="attr: {'data-id': id}"><div class="pkmn-record-shell-inner">
+						<img class="pkmn-sprite" data-bind="attr: {'src': sprite}">
+						<div class="pkmn-record-title" data-bind="text: name"></div>
+						<div class="pkmn-record-desc" data-bind="text: $root.displayLevel($data)"></div>
+						<div class="pkmn-record-delete" data-bind="click: function() { return $root.deletePokemon($parent, $data) }">&times;</div>
+
+				</div></div>
+			 </div>
+		</div>
+	<!-- /ko -->
+	<div class="pkmn-records" data-id="0">
+		<div class="stat-row header-row"><div class="row-title">Unassigned Pokemon</div></div>
+		<div data-bind="sortable: {data: $root.unassignedList, afterMove: $root.processSort}">
+			<div class="pkmn-record-shell" data-bind="attr: {'data-id': id}"><div class="pkmn-record-shell-inner">
+					<img class="pkmn-sprite" data-bind="attr: {'src': sprite}">
+					<div class="pkmn-record-title" data-bind="text: name"></div>
+					<div class="pkmn-record-desc" data-bind="text: $root.displayLevel($data)"></div>
+					<div class="pkmn-record-delete" data-bind="click: $root.deleteUnassignedPokemon">&times;</div>
+
+			</div></div>
+		 </div>
+	<div class="pkmn-record-add">Add New Pokemon</div>
+	</div>
+
+	<div class="stat-row header-row trainer-record-add">
+		<div class="row-title">Add New Trainer</div>
+		<div class="row-content">
+			<input type="text" class="stat-input trainer-name-input">
+			<button class="trainer-submit">Create</button>
+		</div>
+	</div>
+
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

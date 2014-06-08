@@ -1,0 +1,35 @@
+<?php $__env->startSection('title', 'Pokemon Viewer'); ?>
+<?php $__env->startSection('script'); ?>
+	<script src="/js/jquery-ui-1.10.4.custom.min.js"></script>
+	<script type="text/javascript">
+	</script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
+	<div class="pkmn-name"><div class="user-title">User Data for <?php echo $user->username; ?></div></div>
+	<div class="stat-column">
+		<div class="stat-row"><div class="row-title">User Permissions</div></div>
+		<?php foreach($user->permissions()->get() as $p): ?>
+			<div class="stat-row permission-row">
+				<span class="permission-title"><?php echo $p->definition()->name; ?>_<?php echo $p->value; ?></span><span class="permission-desc"> - <?php echo $p->definition()->description; ?></span>
+			</div>
+		<?php endforeach; ?>
+	</div>
+	<div class="stat-column">
+		<div class="stat-row"><div class="row-title"><?php echo count($user->pokemon()->get()); ?> Pokemon across <?php echo count($user->trainers()->get()); ?> Trainers.</div></div>
+		<div class="stat-row permission-row">
+			<span class="permission-title"><?php echo count($user->pokemon()->where('active', 1)->get()); ?> active.</span>
+		</div>
+		<div class="stat-row permission-row">
+			<? $recent = $user->pokemon()->orderBy('updated_at', 'DESC')->first(); ?>
+			<span class="permission-title">Most recently edited: <a href="/pokemon/<?php echo $recent->id; ?>"><?php echo $recent->name; ?></a></span>
+
+		</div>
+		<div class="stat-row permission-row">
+			<? $newest = $user->pokemon()->orderBy('created_at', 'DESC')->first(); ?>
+			<span class="permission-title">Newest: <a href="/pokemon/<?php echo $newest->id; ?>"><?php echo $newest->name; ?></a></span>
+		</div>
+
+	</div>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

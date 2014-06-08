@@ -1,0 +1,14 @@
+<?php $__env->startSection('title', 'Pokemon Viewer'); ?>
+<?php $__env->startSection('script'); ?>
+	<script src="/js/jquery-ui-1.10.4.custom.min.js"></script>
+	<script type="text/javascript">
+	
+	</script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
+	<div class="header-main">This Pokemon is Hidden</div>
+	<div class="hidden-desc"><?php echo $pkmn->name; ?> has been marked as hidden, and can only be viewed by a GM.</div>
+	<div class="hidden-info">If you believe you should have access to this Pokemon's sheet, contact a GM.</div>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

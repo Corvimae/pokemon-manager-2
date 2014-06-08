@@ -1,0 +1,45 @@
+<?php $__env->startSection('title', 'Pokemon Viewer'); ?>
+<?php $__env->startSection('script'); ?>
+	<script src="/js/jquery-ui-1.10.4.custom.min.js"></script>
+	<script type="text/javascript">
+		$(function() {
+
+			$(".trainer-name").click(function(ev) {
+				window.location = "/trainer/" + $(this).parents(".pkmn-records").attr("data-id");
+			});
+			$(".pkmn-record-shell").click(function(ev) {
+				if(ev.ctrlKey) {
+					window.open( "/pokemon/" + $(this).attr("data-id"), '_blank');
+				} else {
+					window.location = "/pokemon/" + $(this).attr("data-id");
+				}
+			});
+
+
+
+
+
+		});
+	</script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
+	<div class="pkmn-name"><div class="user-title">Active Trainers</div></div>	
+	<?php foreach(Trainer::all() as $t): ?>
+		<?php if($t->belongsToGame($game) && !$t->user()->isGM() && count($t->activePokemon()->get()) > 0): ?>
+		<div class="pkmn-records" data-id="<?php echo $t->id; ?>">
+			<div class="stat-row header-row trainer-name"><div class="row-title"><?php echo $t->name; ?></div></div>
+			<?php foreach($t->pokemon()->get() as $p): ?>
+				<div class="pkmn-record-shell" data-id="<?php echo $p->id; ?>"><div class="pkmn-record-shell-inner">
+						<img class="pkmn-sprite" src="<?php echo $p->species()->sprite(); ?>">
+						<div class="pkmn-record-title"><?php echo $p->name; ?></div>
+						<div class="pkmn-record-desc"><?php if(!$p->hidden): ?>Lv. <?php echo $p->level(); ?><?php endif; ?> <?php echo $p->species()->name; ?></div>
+			</div></div>
+			<?php endforeach; ?>
+		</div>
+		<?php endif; ?>
+	<?php endforeach; ?>
+
+
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -1,0 +1,35 @@
+<? $user = Auth::user(); 
+
+?>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title><?php if(isset($user)): ?> <?php echo $user->countNewMessages() > 0 ? '('.$user->countNewMessages().')' : ''; ?> <?php endif; ?> <?php echo $__env->yieldContent('title'); ?></title>
+		<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,400italic' rel='stylesheet' type='text/css'>
+		<link href='font-awesome/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
+		<link href="css/main.css" rel="stylesheet" type="text/css">
+		<?php echo $__env->yieldContent('includes'); ?>
+	</head>
+	<body>
+	
+		<div class="navbar">
+			<a class="nav-title" href="/">Pokemon Manager 2</a>
+			<a class="nav-item" href="/trainers/1">Active Trainers</a>
+			<?php if(isset($user)): ?>
+			
+			<?php if($user->isGM()): ?> <a class="nav-item" href="/gmpanel/<?php echo $user->getAllGMCampaigns()[0]->id; ?>">GM Panel </a><?php endif; ?>
+			<a class="nav-messages <?php echo $user->countNewMessages() > 0 ? 'active' : ''; ?>" href="<?php echo $user->countNewMessages() > 0 ? '/messages/unread' : '/messages'; ?>"><i class="fa fa-envelope"></i></a>
+			<?php if($user->countNewMessages() > 0): ?> <a class="nav-new-messages" href="<?php echo $user->countNewMessages() > 0 ? '/messages/unread' : '/messages'; ?>"><?php echo $user->countNewMessages(); ?></a><?php endif; ?>
+			
+			<a class="nav-exit" href="/logout">Logout</a>
+			<?php endif; ?>
+
+		</div>
+		<?php echo $__env->yieldContent('content'); ?>
+		<script src="js/jquery-2.1.0.js"></script>
+		<script src="js/knockout.js"></script>
+		<script src="js/knockout.bindings.typeahead.min.js"></script>
+
+		<?php echo $__env->yieldContent('script'); ?>
+	</body>
+</html>

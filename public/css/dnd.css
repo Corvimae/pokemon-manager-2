@@ -1,0 +1,535 @@
+.sheet {
+	width: 1200px;
+	margin: 0 auto;
+	border: 1px solid black;
+	height: 1400px;
+	margin-top: 10px;
+	background-color: #fff;
+	position: relative;
+}
+
+.logo {
+	right: 30px;
+	top: 40px;
+	position: absolute;
+}
+
+.item {
+	width: 400px;
+	border-bottom: 1px solid black;
+	height: 30px;
+	margin-right: 20px;
+}
+
+.large-item {
+	font-size: 1.6em;
+}
+
+.med-item {
+	font-size: 1.4em;
+	line-height: 37px;
+}
+
+.short-item {
+	font-size: 1.4em;
+	line-height: 37px;
+	width: 120px;
+}
+
+.tiny-item {
+	width: 85px;
+	font-size: 1.4em;
+	line-height: 37px;
+}
+
+.top-item {
+	float: left;
+}
+
+.top-item-group {
+	margin-top: 40px;
+	margin-left: 20px;
+	clear: both;
+}
+
+.item-desc {
+	font-size: 0.7em;
+}
+
+.stats {
+	top: 20px;
+	width: 330px;
+	left: 20px;
+	position: relative;
+}
+
+.stats-header {
+
+}
+
+.stat-header-item {
+	display: inline-block;
+	font-size: 0.5em;
+	width: 50px;
+	margin-right: 10px;
+	text-align: center;
+}
+
+.stats-row {
+}
+
+.stat-def {
+	width: 60px;
+	height: 30px;
+	background-color: #000;
+	float: left;
+	margin-right: 10px;
+}
+
+.stat-bold {
+	color: #fff;
+	font-weight: 800;
+	text-align: center;
+}
+
+.stat-full {
+	color: #fff;
+	font-size: 0.5em;
+	text-align: center;
+}
+
+.stat-box {
+	width: 40px;
+	height: 24px;
+	margin-top: 3px;
+	margin-left: 6px;
+	text-align: center;
+	border: 1px solid #000;
+	float: left;
+	margin-right: 16px;
+	line-height: 22px;
+}
+
+.temp-area {
+	background-color: #d0d0d0;
+	width: 114px;
+	height: 33px;
+	float: left;
+}
+
+.temp-box {
+	width: 40px;
+	height: 24px;
+	margin-top: 4px;
+	margin-left: 6px;
+	float: left;
+	text-align: center;
+	background-color: #fff;
+}
+
+.temp-box-right {
+	margin-left: 21px;
+}
+
+.top-stats {
+	top: -166px;
+	left: 30px;
+	width: 838px;
+	position: relative;
+	float: left;
+}
+
+.top-stat-def {
+	width: 60px;
+	height: 30px;
+	background-color: #000;
+	margin-right: 10px;
+	float: left;
+}
+
+.top-stat-header-item {
+	display: inline-block;
+	font-size: 0.5em;
+	width: 50px;
+	margin-right: 10px;
+	text-align: center;
+}
+
+.hp-box {
+	width: 50px;
+	height: 24px;
+	margin-top: 2px;
+	border: 1px solid #000;
+	float: left;
+	text-align: center;
+}
+
+.hp-box-large {
+	width: 350px;
+	height: 24px;
+	margin-top: 2px;
+	border: 1px solid #000;
+	float: left;
+	margin-left: 10px;
+}
+
+.symbol {
+	left: 5px;
+	display: table-cell;
+	vertical-align: middle;
+	height: 24px;
+	top: 4px;
+	position: relative;
+	float: left;
+}
+
+.ev-box {
+	width: 50px;
+	height: 24px;
+	top: 2px;
+	border: 1px solid #000;
+	float: left;
+	text-align: center;
+	position: relative;
+	left: 13px;
+	margin-right: 10px;
+	line-height: 22px;
+}
+
+.cha-record {
+	position: absolute;
+	text-align: center;
+	right: 62px;
+	top: 150px;
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+.plus {
+	margin-left: 4px;
+}
+
+.dr {
+	position: absolute;
+	right: -132px;
+	top: 257px;
+	height: 50px;
+}
+
+.ac-mods {
+	position: relative;
+	left: 345px;
+	top: -150px;
+	width: 400px;
+}
+
+.saves {
+	top: -120px;
+	width: 600px;
+	left: 20px;
+	position: relative;
+}
+
+.save-box {
+	width: 40px;
+}
+
+.conmod {
+	width: 100px;
+	height: 119px;
+	border: 1px solid black;
+	position: relative;
+	left: 10px;
+	top: -20px;
+	font-size: 0.4em;
+	text-align: center;
+	line-height: 10px;
+	vertical-align: top;
+	display: table-cell;
+}
+
+.bab-section {
+	position: relative;
+	top: -120px;
+	left: 20px;
+}
+
+.attack-head {
+	width: 230px;
+	height: 25px;
+	border-top-right-radius: 4px;
+	border-top-left-radius: 4px;
+	background-color: #000;
+	color: #fff;
+	text-align: center;
+	font-weight: 800;
+	float: left;
+	line-height: 23px;
+}
+
+.attack-head-item {
+	float: left;
+	text-align: center;
+	font-size: 0.6em;
+	background-color: #000;
+	color: #fff;
+	border-left: 1px solid #fff;
+	width: 150px;
+	height: 15px;
+	margin-top: 10px;
+	line-height: 14px;
+}
+
+.attacks {
+	position: relative;
+	left: 20px;
+	top: -120px;
+}
+
+.attack-content {
+	text-align: center;
+	height: 30px;
+	width: 228px;
+	border-right: 1px solid #000;
+	float: left;
+	line-height: 26px;
+}
+
+.attack-shell {
+	clear: both;
+	position: relative;
+	top: 20px;
+	height: 120px;
+	margin-bottom: 20px;
+}
+
+.no-margin {
+	margin: 0 0;
+}
+
+.ammunition {
+	font-size: 0.6em;
+	font-weight: 800;
+	float: left;
+	margin-top: 5px;
+}
+
+.ammunition-blank {
+	width: 100px;
+	border-bottom: 1px solid #000;
+	float: left;
+	height: 15px;
+	margin-left: 5px;
+	text-align: center;
+	font-size: 0.8em;
+}
+
+.ammunition-box {
+	width: 5px;
+	height: 5px;
+	border: 1px solid #000;
+	margin-right: 1px;
+	float: left;
+	margin-top: 10px;
+}
+
+.spacer {
+	width: 4px;
+	float: left;
+	height: 4px;
+}
+
+.skill-header {
+	width: 500px;
+	background-color: #000;
+	height: 25px;
+}
+
+.skill-title {
+	color: #fff;
+	width: 50px;
+	margin: 0 auto;
+	font-weight: 800;
+	top: 2px;
+	position: relative;
+}
+
+.skills {
+	position: absolute;
+	left: 680px;
+	top: 313px;
+}
+
+.skill-rank-text {
+	float: right;
+	font-size: 0.5em;
+	position: absolute;
+	right: 60px;
+	text-align: right;
+	color: #fff;
+	top: 3px;
+	right: 80px;
+}
+
+.skill-ranks-box {
+	float: right;
+	text-align: center;
+	background-color: #fff;
+	width: 50px;
+	height: 19px;
+	margin-top: 3px;
+	position: absolute;
+	top: 0px;
+	right: 24px;
+}
+
+.class-skill-text {
+	width: 60px;
+	height: 10px;
+	color: #fff;
+	background-color: #000;
+	font-size: 0.5em;
+	-webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+	left: -25px;
+	top: 25px;
+	text-align: center;
+	position: absolute;
+}
+
+.skill-name-text {
+	font-weight: 800;
+	border-bottom: 1px solid #000;
+	border-right: 1px solid #000;
+	left: 10px;
+	width: 174px;
+	height: 34px;
+	padding-left: 20px;
+	line-height: 31px;
+	float: left;
+}
+
+.skill-column-header {
+	border-bottom: 1px solid #000;
+	border-right: 1px solid #000;
+	height: 30px;
+	width: 60px;
+	float: left;
+	font-size: 0.7em;
+	text-align: center;
+	padding-top: 4px;
+}
+
+.cross-class-box {
+	width: 7px;
+	height: 7px;
+	float: left;
+	border: 1px solid #000;
+	position: absolute;
+	top: 5px;
+}
+
+.skill-name {
+	float: left;
+	font-size: 0.8em;
+	left: 16px;
+	top: 1px;
+	position: absolute;
+}
+
+.skill-row {
+	position: relative;
+	height: 20px;
+	width: 500px;
+	top: 5px;
+}
+
+.trained-box {
+	width: 5px;
+	height: 5px;
+	border: 1px solid #000;
+	background-color: #000;
+	display: inline-block;
+	position: relative;
+	left: 5px;
+	top: -1px;
+}
+
+.skill-ability {
+	position: absolute;
+	left: 216px;
+	font-size: 0.6em;
+	top: 4px;
+}
+
+.skill-modifier-box {
+	width: 40px;
+	height: 20px;
+	border: 1px solid #000;
+	position: absolute;
+	left: 265px;
+	text-align: center;
+}
+
+.skill-equals {
+	position: absolute;
+	top: 0px;
+	left: 312px;
+}
+
+.skill-ability-mod {
+	position: absolute;
+	left: 324px;
+	height: 20px;
+	width: 46px;
+	text-align: center;
+	border-bottom: 1px solid #000;
+}
+
+.skill-plus-1 {
+	position: absolute;
+	left: 373px;
+}
+
+.skill-plus-2 {
+	position: absolute;
+	left: 434px;
+}
+
+.skill-ranks {
+	position: absolute;
+	left: 385px;
+	height: 20px;
+	width: 46px;
+	text-align: center;
+	border-bottom: 1px solid #000;
+}
+
+.skill-misc-mod {
+	position: absolute;
+	left: 446px;
+	height: 20px;
+	width: 46px;
+	text-align: center;
+	border-bottom: 1px solid #000;
+}
+
+.skill-notes {
+	margin-top: 10px;
+}
+
+.skill-note-text {
+	font-style: italic;
+	display: inline-block;
+	margin-left: 5px;
+	font-size: 0.8em;
+}
+
+.astrick {
+	font-size: 0.8em;
+	float: left;
+	position: relative;
+	top: 18px;
+	left: 2px;
+}

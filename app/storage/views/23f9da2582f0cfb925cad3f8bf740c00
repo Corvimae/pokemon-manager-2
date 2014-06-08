@@ -1,0 +1,85 @@
+<?php $__env->startSection('title', 'Pokemon Manager 2'); ?>
+<?php $__env->startSection('script'); ?>
+<script type="text/javascript">
+$(function() {
+
+	/*if ($.browser.webkit) {
+	    $('input[type=password]').attr('autocomplete', 'off');
+	    $('input[type="text"]').attr('autocomplete', 'off');
+	}*/
+
+	function loginVM() {
+		var self = this;
+		self.loginMode = ko.observable(0);
+
+		self.setLoginMode = function(mode) {
+			self.loginMode(mode);
+		}
+	}
+
+	ko.applyBindings(new loginVM());
+});
+</script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
+		
+		<div class="existing-account" data-bind="visible: $root.loginMode() == 0">
+			<div class="login-subtitle">Login to an Existing Account
+				<div class="mode-switch" data-bind="click: function() { return $root.setLoginMode(1); }">...or make a new account.</div>
+			</div>
+			
+			<div class="form-holder">
+			<?php echo Form::open(array('url' => 'login', 'autocomplete' => 'off')); ?>
+
+				<p class="login-errors"> 
+					<?php echo $errors->first('username'); ?>
+					<?php echo $errors->first('password'); ?>
+					<?php echo $errors->first('message'); ?>
+				</p>
+
+					<?php echo Form::label('username', 'Username'); ?>
+					<?php echo Form::text('username', Input::old('username'), array('placeholder' => '')); ?>
+
+					<?php echo Form::label('password', 'Password'); ?>
+					<?php echo Form::password('password'); ?>
+				<button type="submit"><i class="fa fa-check"></i></button>
+
+			<?php echo Form::close(); ?>
+			</div>
+
+		</div>
+		<div class="new-account" data-bind="visible: $root.loginMode() == 1">
+			<div class="login-subtitle">Create a New Account
+				<div class="mode-switch" data-bind="click: function() { return $root.setLoginMode(0); }">...or login to an existing account.</div>
+			</div>
+			<div class="form-holder">
+			<?php echo Form::open(array('url' => 'createAccount', 'autocomplete' => 'off')); ?>
+
+			<p>
+				<?php echo $errors->first('register_username'); ?>
+				<?php echo $errors->first('register_password'); ?>
+				<?php echo $errors->first('register_password_confirmation'); ?>
+				<?php echo $errors->first('register_email'); ?>
+
+			</p>
+
+				<?php echo Form::label('register_username', 'Username'); ?>
+				<?php echo Form::text('register_username', Input::old('register_username'), array('placeholder' => '')); ?>
+
+				<?php echo Form::label('register_password', 'Password'); ?>
+				<?php echo Form::password('register_password'); ?>
+
+				<?php echo Form::label('register_password_confirmation', 'Verify Password'); ?>
+				<?php echo Form::password('register_password_confirmation'); ?>
+
+				<?php echo Form::label('register_email', 'Email'); ?>
+				<?php echo Form::text('register_email', Input::old('register_email'), array('placeholder' => '')); ?>
+
+				<button type="submit"><i class="fa fa-check"></i></button>
+			<?php echo Form::close(); ?>
+			</div>
+
+		</div>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
