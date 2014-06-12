@@ -4,8 +4,8 @@
 	<link rel='stylesheet' type='text/css' href='/css/toggle-switch.css' />
 @stop
 @section('script')
-	<script src="js/typeahead.bundle.js"></script>
-	<script src="js/jquery-ui-1.10.4.custom.min.js"></script>
+	<script src="/js/typeahead.bundle.js"></script>
+	<script src="/js/jquery-ui-1.10.4.custom.min.js"></script>
 	<script type="text/javascript">
 		$(function() {
 			var id = {{$pkmn->id}};
@@ -464,6 +464,10 @@
 
 
 				self.healthFormula = ko.observable("{{$pkmn->campaign()->health_formula}}");
+				self.physicalEvasionFormula = ko.observable("{{$pkmn->campaign()->physical_evasion_formula}}");
+				self.specialEvasionFormula = ko.observable("{{$pkmn->campaign()->special_evasion_formula}}");
+				self.speedEvasionFormula = ko.observable("{{$pkmn->campaign()->speed_evasion_formula}}");
+
 				self.ruleset = ko.observable({{$pkmn->campaign()->isPTU}});
 				
 				self.campaign = ko.observable({id: {{$pkmn->campaign()->id}}, name: "{{$pkmn->campaign()->name}}"});
@@ -510,89 +514,89 @@
 			        if($xp < 250) return 15;
 			        if($xp < 285) return 16;
 			        if($xp < 320) return 17;
-			        if($xp < 360) return 20;
-			        if($xp < 400) return 21;
-			        if($xp < 460) return 22;
-			        if($xp < 530) return 23;
-			        if($xp < 600) return 24;
-			        if($xp < 670) return 25;
-			        if($xp < 745) return 26;
-			        if($xp < 820) return 27;
-			        if($xp < 900) return 28;
-			        if($xp < 990) return 29;
-			        if($xp < 1075) return 30;
-			        if($xp < 1165) return 31;
-			        if($xp < 1260) return 32;
-			        if($xp < 1355) return 33;
-			        if($xp < 1455) return 34;
-			        if($xp < 1555) return 35;
-			        if($xp < 1660) return 36;
-			        if($xp < 1770) return 37;
-			        if($xp < 1880) return 38;
-			        if($xp < 1995) return 39;
-			        if($xp < 2110) return 40;
-			        if($xp < 2230) return 41;
-			        if($xp < 2355) return 42
-			        if($xp < 2480) return 43;
-			        if($xp < 2610) return 44;
-			        if($xp < 2740) return 45;
-			        if($xp < 2875) return 46;
-			        if($xp < 3015) return 47;
-			        if($xp < 3155) return 48;
-			        if($xp < 3300) return 49;
-			        if($xp < 3445) return 50;
-			        if($xp < 3645) return 51;
-			        if($xp < 3850) return 52;
-			        if($xp < 4060) return 53;
-			        if($xp < 4270) return 54;
-			        if($xp < 4485) return 55;
-			        if($xp < 4705) return 56;
-			        if($xp < 4930) return 57;
-			        if($xp < 5160) return 58;
-			        if($xp < 5390) return 59;
-			        if($xp < 5625) return 60;
-			        if($xp < 5865) return 61;
-			        if($xp < 6110) return 62;
-			        if($xp < 6360) return 63;
-			        if($xp < 6610) return 64;
-			        if($xp < 6865) return 65;
-			        if($xp < 7125) return 66;
-			        if($xp < 7390) return 67;
-			        if($xp < 7660) return 68;
-			        if($xp < 7925) return 69;
-			        if($xp < 8205) return 70;
-			        if($xp < 8485) return 71;
-			        if($xp < 8770) return 72;
-			        if($xp < 9060) return 73;
-			        if($xp < 9350) return 74;
-			        if($xp < 9645) return 75;
-			        if($xp < 9945) return 76;
-			        if($xp < 10250) return 77;
-			        if($xp < 10560) return 78;
-			        if($xp < 10870) return 79;
-			        if($xp < 11185) return 80;
-			        if($xp < 11505) return 81;
-			        if($xp < 11910) return 82;
-			        if($xp < 12320) return 83;
-			        if($xp < 12735) return 84;
-			        if($xp < 13155) return 85;
-			        if($xp < 13580) return 86;
-			        if($xp < 14010) return 87;
-			        if($xp < 14445) return 88;
-			        if($xp < 14885) return 89;
-			        if($xp < 15330) return 90;
-			        if($xp < 15780) return 91;
-			        if($xp < 16235) return 92;
-			        if($xp < 16695) return 93;
-			        if($xp < 17160) return 94;
-			        if($xp < 17630) return 95;
-			        if($xp < 18105) return 96;
-			        if($xp < 18585) return 97;
-			        if($xp < 19070) return 98;
-			        if($xp < 19560) return 99;
-			        if($xp < 20055) return 99;
-			        if($xp >= 20055) return 100;
-			        return 0;
+			        if($xp < 360) return 18;
+			        if($xp < 400) return 19;
+			        if($xp < 460) return 20;
+			        if($xp < 530) return 21;
+			        if($xp < 600) return 22;
+			        if($xp < 670) return 23;
+			        if($xp < 745) return 24;
+			        if($xp < 820) return 25;
+			        if($xp < 900) return 26;
+			        if($xp < 990) return 27;
+			        if($xp < 1075) return 28;
+			        if($xp < 1165) return 29;
+			        if($xp < 1260) return 30;
+			        if($xp < 1355) return 31;
+			        if($xp < 1455) return 32;
+			        if($xp < 1555) return 33;
+			        if($xp < 1660) return 34;
+			        if($xp < 1770) return 35;
+			        if($xp < 1880) return 36;
+			        if($xp < 1995) return 37;
+			        if($xp < 2110) return 38;
+			        if($xp < 2230) return 39;
+			        if($xp < 2355) return 40;
+			        if($xp < 2480) return 41;
+			        if($xp < 2610) return 42;
+			        if($xp < 2740) return 43;
+			        if($xp < 2875) return 44;
+			        if($xp < 3015) return 45;
+			        if($xp < 3155) return 46;
+			        if($xp < 3300) return 47;
+			        if($xp < 3445) return 48;
+			        if($xp < 3645) return 49;
+			        if($xp < 3850) return 50;
+			        if($xp < 4060) return 51;
+			        if($xp < 4270) return 52;
+			        if($xp < 4485) return 53;
+			        if($xp < 4705) return 54;
+			        if($xp < 4930) return 55;
+			        if($xp < 5160) return 56;
+			        if($xp < 5390) return 57;
+			        if($xp < 5625) return 58;
+			        if($xp < 5865) return 59;
+			        if($xp < 6110) return 60;
+			        if($xp < 6360) return 61;
+			        if($xp < 6610) return 62;
+			        if($xp < 6865) return 63;
+			        if($xp < 7125) return 64;
+			        if($xp < 7390) return 65;
+			        if($xp < 7660) return 66;
+			        if($xp < 7925) return 67;
+			        if($xp < 8205) return 68;
+			        if($xp < 8485) return 69;
+			        if($xp < 8770) return 70;
+			        if($xp < 9060) return 71;
+			        if($xp < 9350) return 72;
+			        if($xp < 9645) return 73;
+			        if($xp < 9945) return 74;
+			        if($xp < 10250) return 75;
+			        if($xp < 10560) return 76;
+			        if($xp < 10870) return 77;
+			        if($xp < 11185) return 78;
+			        if($xp < 11505) return 79;
+			        if($xp < 11910) return 80;
+			        if($xp < 12320) return 81;
+			        if($xp < 12735) return 82;
+			        if($xp < 13155) return 83;
+			        if($xp < 13580) return 84;
+			        if($xp < 14010) return 85;
+			        if($xp < 14445) return 86;
+			        if($xp < 14885) return 87;
+			        if($xp < 15330) return 88;
+			        if($xp < 15780) return 89;
+			        if($xp < 16235) return 90;
+			        if($xp < 16695) return 91;
+			        if($xp < 17160) return 92;
+			        if($xp < 17630) return 93;
+			        if($xp < 18105) return 94;
+			        if($xp < 18585) return 95;
+			        if($xp < 19070) return 96;
+			        if($xp < 19560) return 97;
+			        if($xp < 20055) return 98;
+			        if($xp < 20555) return 99;
+			        return 100;
 			}	
 				self.currentHealth = ko.observable({{$pkmn->current_health}});
 
@@ -635,7 +639,7 @@
 
 				self.heldItem = ko.observable("{{$pkmn->heldItem()->name}}");
 
-				self.loyalty = ko.observable({{(Auth::user()->isSpecificGM($pkmn->legacy) || Auth::user()->hasPermissionValue('Loyalty', $pkmn->legacy)) ? $pkmn->loyalty : -9999}});
+				self.loyalty = ko.observable({{(Auth::user()->isSpecificGM($pkmn->campaign()->id) || Auth::user()->hasPermissionValue('Loyalty', $pkmn->campaign()->id)) ? $pkmn->loyalty : -9999}});
 
 				self.gmNotes = ko.observable("{{(Auth::user()->isSpecificGM($pkmn->legacy)) ? str_replace(PHP_EOL, '\\n', $pkmn->gm_notes) : 'Hidden'}}");
 
@@ -667,56 +671,67 @@
 
 				self.healthMod = ko.observable(0);
 
+				self.replaceBrackets = function(input) {
+					input = input.replace('{level}', self.level());
+					input = input.replace('{base_hp}', self.baseHp());
+					input = input.replace('{base_attack}', self.baseAttack());
+					input = input.replace('{base_defense}', self.baseDefense());
+					input = input.replace('{base_spattack}', self.baseSpAttack());
+					input = input.replace('{base_spdefense}', self.baseSpDefense());
+					input = input.replace('{base_speed}', self.baseSpeed());
+					input = input.replace('{add_hp}', self.addHp());
+					input = input.replace('{add_attack}', self.addAttack());
+					input = input.replace('{add_defense}', self.addDefense());
+					input = input.replace('{add_spattack}', self.addSpAttack());
+					input = input.replace('{add_spdefense}', self.addSpDefense());
+					input = input.replace('{add_speed}', self.addSpeed());
+					input = input.replace('{total_hp}', self.totalHp());
+					input = input.replace('{total_attack}', self.totalAttack());
+					input = input.replace('{total_defense}', self.totalDefense());
+					input = input.replace('{total_spattack}', self.totalSpAttack());
+					input = input.replace('{total_spdefense}', self.totalSpDefense());
+					input = input.replace('{total_speed}', self.totalSpeed());
+					input = input.replace('min', 'Math.min');
+					input = input.replace('max', 'Math.max');
+					input = input.replace('floor', 'Math.floor');
+					input = input.replace('ceil', 'Math.ceil');
+					input = input.replace('{attack_stages}', self.attackCombatStages());
+					input = input.replace('{defense_stages}', self.defenseCombatStages());
+					input = input.replace('{spattack_stages}', self.spAttackCombatStages());
+					input = input.replace('{spdefense_stages}', self.spDefenseCombatStages());
+					input = input.replace('{speed_stages}', self.speedCombatStages());
+					return input;
+				}
+				
 				self.maxHealth = ko.computed(function() {
-					var hps = self.healthFormula();
-					hps = hps.replace('{level}', self.level());
-					hps = hps.replace('{base_hp}', self.baseHp());
-					hps = hps.replace('{base_attack}', self.baseAttack());
-					hps = hps.replace('{base_defense}', self.baseDefense());
-					hps = hps.replace('{base_spattack}', self.baseSpAttack());
-					hps = hps.replace('{base_spdefense}', self.baseSpDefense());
-					hps = hps.replace('{base_speed}', self.baseSpeed());
-					hps = hps.replace('{add_hp}', self.addHp());
-					hps = hps.replace('{add_attack}', self.addAttack());
-					hps = hps.replace('{add_defense}', self.addDefense());
-					hps = hps.replace('{add_spattack}', self.addSpAttack());
-					hps = hps.replace('{add_spdefense}', self.addSpDefense());
-					hps = hps.replace('{add_speed}', self.addSpeed());
-					hps = hps.replace('{total_hp}', self.totalHp());
-					hps = hps.replace('{total_attack}', self.totalAttack());
-					hps = hps.replace('{total_defense}', self.totalDefense());
-					hps = hps.replace('{total_spattack}', self.totalSpAttack());
-					hps = hps.replace('{total_spdefense}', self.totalSpDefense());
-					hps = hps.replace('{total_speed}', self.totalSpeed());
-					return eval(hps);
-					
+					return eval(self.replaceBrackets(self.healthFormula()));
 				});
+				
+		
 
 				self.speedEvasion = ko.computed(function() {
-					var total = parseInt(self.baseSpeed()) + parseInt(self.addSpeed());
-					return Math.min(Math.min(Math.floor(total / 10), 6) + Math.min(self.speedCombatStages() > 0 ? self.speedCombatStages() : 0, 6), 9);
+					return eval(self.replaceBrackets(self.speedEvasionFormula()));
+					/*var total = parseInt(self.baseSpeed()) + parseInt(self.addSpeed());
+					return Math.min(Math.min(Math.floor(total / 10), 6) + Math.min(self.speedCombatStages() > 0 ? self.speedCombatStages() : 0, 6), 9);*/
 				});
 
 				self.attackEvasion = ko.computed(function() {
-					var total = parseInt(self.baseDefense()) + parseInt(self.addDefense());
+					return eval(self.replaceBrackets(self.physicalEvasionFormula()));
+					/*var total = parseInt(self.baseDefense()) + parseInt(self.addDefense());
 					return true ?  Math.min(Math.floor(total / 5) + self.speedEvasion(), 6) + Math.min(self.defenseCombatStages() > 0 ? self.defenseCombatStages() : 0, 6) : 
-					Math.min(Math.min(Math.floor(total / 5), 6) + Math.min(self.defenseCombatStages() > 0 ? self.defenseCombatStages() : 0, 6), 9);
+					Math.min(Math.min(Math.floor(total / 5), 6) + Math.min(self.defenseCombatStages() > 0 ? self.defenseCombatStages() : 0, 6), 9);*/
 				});
 
 				self.specialEvasion = ko.computed(function() {
-					var total = parseInt(self.baseSpDefense()) + parseInt(self.addSpDefense());
+					return eval(self.replaceBrackets(self.specialEvasionFormula()));
+					/*var total = parseInt(self.baseSpDefense()) + parseInt(self.addSpDefense());
 					return true?  Math.min(Math.floor(total / 5)  + self.speedEvasion(), 6) + Math.min(self.spDefenseCombatStages() > 0 ? self.spDefenseCombatStages() : 0, 6) : 
-					Math.min(Math.min(Math.floor(total / 5), 6) + Math.min(self.spDefenseCombatStages() > 0 ? self.spDefenseCombatStages() : 0, 6), 9);
+					Math.min(Math.min(Math.floor(total / 5), 6) + Math.min(self.spDefenseCombatStages() > 0 ? self.spDefenseCombatStages() : 0, 6), 9);*/
 				});
 
 				self.stabModifier = ko.computed(function() {
 					return Math.floor(self.level() / 5);
 				});
-
-
-
-
-
 
 				self.moveList = ko.observableArray([]);
 				@foreach($pkmn->moves()->get() as $mv)
@@ -730,14 +745,16 @@
 							data.ptu = data.ptu[0];
 							if(self.ruleset() == 0) {
 								self.selectedMove({
+									category: "move",
 									title: data.base.name,
 									accuracy: data.base.ac,
 									range: data.base.attack_range,
-									type: data.base.attack_type,
+									attack_type: data.base.attack_type,
 									damage: data.base.damage,
 									effect: data.base.effects,
 									move_type: data.base.type
 								});
+								console.log(self.selectedMove());
 								//$(".popover .popover-content").html("<b>Accuracy: </b>" + data.base.ac + "<br><b>Range: </b>" + data.base.attack_range + ", " + (data.base.attack_type == 0 ? "Attack" : "Sp. Attack") + (data.base.damage != '-' ? "<br><b>Damage: </b>" + data.base.damage : "") + "<br><br>" + data.base.effects);
 							} else {
 								if(data.ptu == undefined) {
@@ -745,6 +762,7 @@
 									//$(".popover .popover-content").html('No PTU data exists for this move.');
 								} else {	
 									self.selectedMove({
+										category: "move",
 										title: data.base.name,
 										accuracy: data.ptu.ac,
 										range: data.ptu.attack_range,
@@ -759,8 +777,13 @@
 						});
 					} else {					
 						$.getJSON("/api/v1/contest/moves/" + $(this).attr("data-id"), function(data) {
-							$(".popover .popover-title").text(data.name);
-							$(".popover .popover-content").html("<b>Type: </b>" + data.contest_type + "<br><b>Dice: </b>" + data.contest_dice + "d6<br><br>" + data.contest_ability_name + " - " + data.contest_ability_desc);
+							self.selectedMove({
+								category: 'contest',
+								title: data.name,
+								contest_type: data.contest_type,
+								dice: data.contest_dice,
+								effect: data.contest_ability_desc
+							});
 						});
 
 					}
@@ -859,15 +882,17 @@
 						
 						if(self.ruleset() == 0) {
 							self.selectedMove({
+								category: 'ability',
 								title: data.base.name,
 								frequency: data.base.frequency,
 								effect: data.base.description,
 							})
 						} else {
 							self.selectedMove({
+								category: 'ability',
 								title: data.base.name,
 								frequency: data.ptu.frequency,
-								effect: data.put.effect,
+								effect: data.ptu.effect,
 							})
 						}
 					});
@@ -1036,7 +1061,7 @@
 	</script>
 @stop
 @section('content')
-<? $isGM = Auth::user()->isSpecificGM($pkmn->legacy); ?>
+<? $isGM = Auth::user()->isSpecificGM($pkmn->campaign()->id); ?>
 	<div id="type-picker">
 		@foreach(Type::All() as $t)
 			<img class="type-badge type-pick-item" data-id="{{$t->id}}" src="{{$t->icon()}}"> 
@@ -1046,10 +1071,14 @@
 	<div class="popover" data-bind="with: $root.selectedMove">
 		<div class="popover-title" data-bind="text: title"></div>
 		<div class="popover-content">
-			<b>Accuracy: </b><span data-bind="text: accuracy"></span><br>
-			<b>Range: </b><span data-bind="text: range"></span><br>
-			<div class="move-info-row" data-bind="visible: ($root.ruleset() == 1 && attack_type != 2)"><b>Attack Type: </b><span data-bind="text: $root.parseMoveAttackType($data)"></span></div>
-			<div class="move-info-row" data-bind="visible: $root.ruleset() == 0 ? damage != '-' : damage() != 0"><b>Damage: </b><span data-bind="text: $root.parseMoveDamage($data)"></span></div><br>
+			<div class="move-info-row" data-bind="visible: category == 'move'"><b>Accuracy: </b><span data-bind="text: category == 'move' ? accuracy : ''"></span></div>
+			<div class="move-info-row" data-bind="visible: category == 'move'"><b>Range: </b><span data-bind="text: category == 'move' ? range : ''"></span></div>
+			<div class="move-info-row" data-bind="visible: (category == 'move' && attack_type != 2)"><b>Attack Type: </b><span data-bind="text: category == 'move' ? $root.parseMoveAttackType($data) : ''"></span></div>
+			<div class="move-info-row" data-bind="visible: category == 'move' && ($root.ruleset() == 0 ? damage != '-' : damage() != 0)"><b>Damage: </b><span data-bind="text: category == 'move' ? $root.parseMoveDamage($data) : ''"></span></div>
+			<div class="move-info-row" data-bind="visible: category == 'ability'"><b>Frequency: </b><span data-bind="text: category == 'ability' ? frequency : ''"></span></div>
+			<div class="move-info-row" data-bind="visible: category == 'contest'"><b>Type: </b><span data-bind="text: category == 'contest' ? contest_type : ''"></span></div>
+			<div class="move-info-row" data-bind="visible: category == 'contest'"><b>Dice: </b><span data-bind="text: category == 'contest' ? dice + 'd6' : ''"></span></div>
+			<br>
 			<span data-bind="text: effect"></span>
 
 		</div>
