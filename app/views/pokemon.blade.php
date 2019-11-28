@@ -16,7 +16,7 @@
 				console.log("Setting animation position");
 			}
 
-			$(".battle-bg").css("background-image", "url(http://cdn.acceptableice.com/pkmn/battle-bg-" + (Math.floor(Math.random()*2) + 1) + ".png)");
+			$(".battle-bg").css("background-image", "url(/images/backgrounds/" + (Math.floor(Math.random()*3) + 1) + ".png)");
 
 			var natures = new Bloodhound({
 			  datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.nature); },

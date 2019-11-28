@@ -9,7 +9,7 @@
 @stop
 @section('content')
 <div class="sheet">
-	<img class="logo" src="http://cdn.acceptableice.com/pkmn/logo.png">
+	<!-- <img class="logo" src="http://cdn.acceptableice.com/pkmn/logo.png"> -->
 	<div class="cha-record">CHARACTER RECORD SHEET</div>
 	<div class="top-item-group">
 		<div class="top-item"><div class="item large-item">{{$pkmn->name}}</div><div class="item-desc">CHARACTER NAME</div></div>

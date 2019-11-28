@@ -17,7 +17,7 @@
 				console.log("Setting animation position");
 			}
 
-			$(".battle-bg").css("background-image", "url(http://cdn.acceptableice.com/pkmn/battle-bg-" + (Math.floor(Math.random()*2) + 1) + ".png)");
+			$(".battle-bg").css("background-image", "url(/images/backgrounds/" + (Math.floor(Math.random()*3) + 1) + ".png)");
 
 			var natures = new Bloodhound({
 			  datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.nature); },
@@ -800,7 +800,7 @@
 					var source = this;
 					if($(this).typeahead("val")[0] != undefined) {
 						$.getJSON("/api/v1/pokemon/" + id + "/insert/move/" + $(this).typeahead("val")[0].replace(' ', '-'), function(data) {
-							self.moveList.push({"uniq_id":data.uniq_id, "move_id": data.id, "name": data.name, "icon": "http://cdn.acceptableice.com/pkmn/type-badges/" + data.type + ".png", "frequency": data.frequency, "ppUp": ko.observable(false),
+							self.moveList.push({"uniq_id":data.uniq_id, "move_id": data.id, "name": data.name, "icon": "/images/types/" + data.type.toLowerCase() + ".png", "frequency": data.frequency, "ppUp": ko.observable(false),
 										"isTutor": ko.observable(false), "contestEffect": data.contest_effect, "contestType": data.contest_type, "contestDice": data.contest_dice})
 
 

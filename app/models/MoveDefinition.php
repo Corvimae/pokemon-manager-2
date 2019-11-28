@@ -9,7 +9,7 @@ class MoveDefinition extends Eloquent {
 	
 	public function icon() {
 		if(!isset($this->type()->name)) return "";
-		return "http://cdn.acceptableice.com/pkmn/type-badges/".$this->type()->name.".png";
+		return "/images/types".$this->type()->name.".png";
 	}
 
 	public function contestEffect() {
