@@ -67,7 +67,7 @@
 						outstr += arg.targetParent()[p].id + ",";
 					}
 					outstr = outstr.substr(0, outstr.length - 1);
-					var t_id = $(this).parent().attr("data-id");
+					var t_id = $(this).parent().attr("data-id") || 0;
 					$.getJSON("/api/v1/pokemon/" + arg.item.id + "/update/trainer/" + t_id, function(data) {
 						$.getJSON("/api/v1/trainer/" + t_id + "/pokemon/sort/" + outstr);
 					});
@@ -102,7 +102,7 @@
 	<!-- ko foreach: $root.trainerList -->
 		<div class="pkmn-records" data-bind="attr: {'data-id': id }">
 			<div class="stat-row header-row trainer-name" data-bind="click: $root.goToTrainer"><div class="row-title" data-bind="text: name"></div></div>
-			 <div data-bind="sortable: {data: pokemon, afterMove: $root.processSort}">
+			 <div class="pkmn-record-set" data-bind="sortable: {data: pokemon, afterMove: $root.processSort}">
 				<div class="pkmn-record-shell" data-bind="attr: {'data-id': id}, click: $root.goToPokemon"><div class="pkmn-record-shell-inner">
 						<img class="pkmn-sprite" data-bind="attr: {'src': sprite}">
 						<div class="pkmn-record-title" data-bind="text: name"></div>
@@ -115,16 +115,21 @@
 	<!-- /ko -->
 	<div class="pkmn-records" data-id="0">
 		<div class="stat-row header-row"><div class="row-title">Unassigned Pokemon</div></div>
-		<div data-bind="sortable: {data: $root.unassignedList, afterMove: $root.processSort}">
-			<div class="pkmn-record-shell" data-bind="attr: {'data-id': id}, click: $root.goToPokemon"><div class="pkmn-record-shell-inner">
-					<img class="pkmn-sprite" data-bind="attr: {'src': sprite}">
-					<div class="pkmn-record-title" data-bind="text: name"></div>
-					<div class="pkmn-record-desc" data-bind="text: $root.displayLevel($data)"></div>
-					<div class="pkmn-record-delete" data-bind="click: $root.deleteUnassignedPokemon">&times;</div>
-
-			</div></div>
-		 </div>
-	<div class="pkmn-record-add">Add New Pokemon</div>
+		<div>
+		<div class="pkmn-record-group">
+			<div class="pkmn-record-add">Add New Pokemon</div>
+			<div class="pkmn-record-set" data-bind="sortable: {data: $root.unassignedList, afterMove: $root.processSort}">
+				<div class="pkmn-record-shell" data-bind="attr: {'data-id': id}, click: $root.goToPokemon">
+					<div class="pkmn-record-shell-inner">
+						<img class="pkmn-sprite" data-bind="attr: {'src': sprite}">
+						<div class="pkmn-record-title" data-bind="text: name"></div>
+						<div class="pkmn-record-desc" data-bind="text: $root.displayLevel($data)"></div>
+						<div class="pkmn-record-delete" data-bind="click: $root.deleteUnassignedPokemon">&times;</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
 	</div>
 
 	<div class="stat-row header-row trainer-record-add">

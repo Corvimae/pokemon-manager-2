@@ -1013,6 +1013,17 @@ input:-webkit-autofill {
 	max-width: 1200px;
 }
 
+/* .pkmn-record-group {
+	min-height: 0;
+} */
+
+.pkmn-record-set {
+	display: inline-block;
+	min-height: 70px;
+	min-width: 420px;
+}
+
+
 .pkmn-record-title {
 	position: absolute;
 	left: 70px;
