@@ -88,7 +88,7 @@
 @section('content')
 	<div class="pkmn-name"><div class="user-title">{{$trainer->name }}</div></div>
 	<div class="stat-row"><div class="row-title">{{$trainer->name}} has {{ count($trainer->pokemon()->get()) }} Pokemon ({{count($trainer->pokemon()->where('active', true)->get())}} active).</div></div>
-	@if(Auth::user()->isSpecificGM($trainer->primaryCampaign())) 
+	@if(Auth::user()->isSpecificGM($trainer->campaign()->id)) 
 	<div class="stat-row"><div class="row-title">Trainer ID</div><div class="row-content">{{$trainer->id}}</div></div>
 	@endif
 

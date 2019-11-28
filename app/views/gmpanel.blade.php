@@ -20,7 +20,10 @@
 				self.sleep = ko.observable(false);
 				
 				self.healthFormula = ko.observable("{{$campaign->health_formula}}");
-				self.isPTU = ko.observable({{$campaign->isPTU}});
+				self.physicalEvasionFormula = ko.observable("{{$campaign->physical_evasion_formula}}");
+				self.specialEvasionFormula = ko.observable("{{$campaign->special_evasion_formula}}");
+				self.speedEvasionFormula = ko.observable("{{$campaign->speed_evasion_formula}}");
+				self.isPTU = ko.observable({{$campaign->is_ptu}});
 
 				self.damageModifiers = ko.observableArray([
 					{name: "100%", value: -15},
@@ -55,7 +58,12 @@
 
 				self.saveStats = function() {
 				console.log(self.healthFormula());
-					$.post("/api/v1/campaign/{{$campaign->id}}/formula/health/update", {value: self.healthFormula()}, function() {});
+					$.post("/api/v1/campaign/{{$campaign->id}}/formulas/update", {
+						health: self.healthFormula(),
+						physicalEvasion: self.physicalEvasionFormula(),
+						specialEvasion: self.specialEvasionFormula(),
+						speedEvasion: self.speedEvasionFormula()
+					}, function() {});
 					$.post("/api/v1/campaign/{{$campaign->id}}/setting/ptu/update", {value: self.isPTU()}, function() {});
 
 				}
@@ -76,13 +84,18 @@
 @section('content')
 <?php	$game = $campaign->id ?>
 	<div class="pkmn-name"><div class="user-title">{{$campaign->name}} GM Panel</div></div>
+	
+	<?php $other_campaigns = array_filter(Auth::user()->getAllGMCampaigns(), function($item) use ($game) { return $item->id != $game; }); ?>
+	@if($other_campaigns)
 	<div class="stat-row">
-	<div class="row-title">Other Panels</div><div class="row-content">
-		@foreach(Auth::user()->getAllGMCampaigns() as $c)
-			@if($c->id != $game) <a class="panel-link" href="/gmpanel/{{$c->id}}">{{$c->name}}</a>@endif
-		@endforeach
+		<div class="row-title">Other Panels</div><div class="row-content">
+			@foreach($other_campaigns as $c)
+				<a class="panel-link" href="/gmpanel/{{$c->id}}">{{$c->name}}</a>
+			@endforeach
+		</div>
 	</div>
-	</div>
+	@endif
+
 	<div class="gm-col">
 		<div class="panel-frame">
 			<div class="panel-title">Statistics</div>
@@ -183,8 +196,8 @@
 		</div>
 		<div class="panel-frame trainer-list">
 			<div class="panel-title" style="margin-bottom: 10px">User Data</div>
-				@foreach(DB::table('player_pokemon_data')->groupBy('user_id')->get() as $p)
-					<?php $activeUser = User::find($p->user_id); ?>
+				@foreach(DB::table('player_pokemon_data')->select('user_id')->distinct()->get() as $p)
+					<?php $activeUser = User::find($p["user_id"]); ?>
 					@if($activeUser->belongsToGame($game)) <div class="stat-row gm-user-row"><a href='/user/{{$activeUser->id}}'>{{$activeUser->username}}</a></div> @endif
 				@endforeach
 		</div>
@@ -211,22 +224,31 @@
 		</div>
 		<div class="panel-frame trainer-list">
 			<div class="panel-title" style="margin-bottom: 10px">Campaign Settings</div>
-				<div class="gm-reference-info"
+				<div class="gm-reference-info">
 					<label for='ptu-check'>PTU?</label><input type='checkbox' class="gm-settings-check" name='ptu-check' data-bind="checked: $root.isPTU">
 				</div>
 				<div class="stat-row gm-user-row">Stat Calculations</div>
 				<div class="gm-reference-info small-gm-info">
 					Available Variables:<br>
 					{level}: Pokemon Level<br>
-					{[stat]_total}: Total stat value (e.g. {attack_total})<br>
-					{[stat]_base}: Base stat value<br>
-					{[stat]_add}: Add stat value<br>
+					{total_[stat]}: Total stat value (e.g. {attack_total})<br>
+					{base_[stat]}: Base stat value<br>
+					{add_[stat]}: Add stat value<br>
 					Stats: hp, attack, defense, spattack, spdefense, speed
 				
 				</div>
 				<div class="gm-reference-info">
-					Health: <input type="text" class="gmSettingBox" id="calcHealth" data-bind="value: healthFormula">
-					
+					<div class="gm-reference-formulas">
+						<div>Health</div>
+						<input type="text" class="gmSettingBox" id="calcHealth" data-bind="value: healthFormula">
+						<div>Physical Evasion</div>
+						<input type="text" class="gmSettingBox" id="calcHealth" data-bind="value: physicalEvasionFormula">
+						<div>Special Evasion</div>
+						<input type="text" class="gmSettingBox" id="calcHealth" data-bind="value: specialEvasionFormula">
+						<div>Speed Evasion</div>
+						<input type="text" class="gmSettingBox" id="calcHealth" data-bind="value: speedEvasionFormula">
+					</div>
+
 					<button id="saveStats" data-bind="click: $root.saveStats">Save</button>
 				</div>
 				
@@ -235,8 +257,9 @@
 			<div class="panel-title" style="margin-bottom: 10px">Reference</div>
 				<div class="stat-row gm-user-row">Campaign IDs</div>
 				<div class="gm-reference-info">
-					0 - Foundations <br>
-					1 - Sacrem Region
+					@foreach(Campaign::all() as $c)
+					<div>{{$c->id}} - {{{$c->name}}}</div>
+					@endforeach
 				</div>
 				<div class="stat-row gm-user-row">Type IDs</div>
 				<div class="gm-reference-info">
@@ -253,7 +276,7 @@
 		</div>
 		<div class="panel-frame trainer-list">
 			<div class="panel-title" style="margin-bottom: 10px">Message of the Day</div>
-			<textarea class="motd-box">{{ file_get_contents('../motd.txt'); }}</textarea>
+			<textarea class="motd-box">{{ file_get_contents(__DIR__.'/../../motd.txt'); }}</textarea>
 			<button class="submit motd-submit">Save</button>
 	</div>
 

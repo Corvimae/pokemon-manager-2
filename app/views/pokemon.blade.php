@@ -468,7 +468,7 @@
 				self.specialEvasionFormula = ko.observable("{{$pkmn->campaign()->special_evasion_formula}}");
 				self.speedEvasionFormula = ko.observable("{{$pkmn->campaign()->speed_evasion_formula}}");
 
-				self.ruleset = ko.observable({{$pkmn->campaign()->isPTU}});
+				self.ruleset = ko.observable({{$pkmn->campaign()->is_ptu}});
 				
 				self.campaign = ko.observable({id: {{$pkmn->campaign()->id}}, name: "{{$pkmn->campaign()->name}}"});
 				
@@ -641,7 +641,7 @@
 
 				self.loyalty = ko.observable({{(Auth::user()->isSpecificGM($pkmn->campaign()->id) || Auth::user()->hasPermissionValue('Loyalty', $pkmn->campaign()->id)) ? $pkmn->loyalty : -9999}});
 
-				self.gmNotes = ko.observable("{{(Auth::user()->isSpecificGM($pkmn->legacy)) ? str_replace(PHP_EOL, '\\n', $pkmn->gm_notes) : 'Hidden'}}");
+				self.gmNotes = ko.observable("{{(Auth::user()->isSpecificGM($pkmn->campaign()->id)) ? str_replace(PHP_EOL, '\\n', $pkmn->gm_notes) : 'Hidden'}}");
 
 				self.contestMode = ko.observable(localStorage.getItem('contestMode') == "1");
 
@@ -669,38 +669,47 @@
 					return self.contestMode() ? Math.min(Math.floor(total/10), 6) : self.calculateCombatStageModifier(total, self.speedCombatStages());
 				});
 
-				self.healthMod = ko.observable(0);
+				self.healthMod = ko.observable(1);
 
 				self.replaceBrackets = function(input) {
-					input = input.replace('{level}', self.level());
-					input = input.replace('{base_hp}', self.baseHp());
-					input = input.replace('{base_attack}', self.baseAttack());
-					input = input.replace('{base_defense}', self.baseDefense());
-					input = input.replace('{base_spattack}', self.baseSpAttack());
-					input = input.replace('{base_spdefense}', self.baseSpDefense());
-					input = input.replace('{base_speed}', self.baseSpeed());
-					input = input.replace('{add_hp}', self.addHp());
-					input = input.replace('{add_attack}', self.addAttack());
-					input = input.replace('{add_defense}', self.addDefense());
-					input = input.replace('{add_spattack}', self.addSpAttack());
-					input = input.replace('{add_spdefense}', self.addSpDefense());
-					input = input.replace('{add_speed}', self.addSpeed());
-					input = input.replace('{total_hp}', self.totalHp());
-					input = input.replace('{total_attack}', self.totalAttack());
-					input = input.replace('{total_defense}', self.totalDefense());
-					input = input.replace('{total_spattack}', self.totalSpAttack());
-					input = input.replace('{total_spdefense}', self.totalSpDefense());
-					input = input.replace('{total_speed}', self.totalSpeed());
-					input = input.replace('min', 'Math.min');
-					input = input.replace('max', 'Math.max');
-					input = input.replace('floor', 'Math.floor');
-					input = input.replace('ceil', 'Math.ceil');
-					input = input.replace('{attack_stages}', self.attackCombatStages());
-					input = input.replace('{defense_stages}', self.defenseCombatStages());
-					input = input.replace('{spattack_stages}', self.spAttackCombatStages());
-					input = input.replace('{spdefense_stages}', self.spDefenseCombatStages());
-					input = input.replace('{speed_stages}', self.speedCombatStages());
-					return input;
+					const replacementValues = {
+						level: self.level(),
+						base_hp: self.baseHp(),
+						base_attack: self.baseAttack(),
+						base_defense: self.baseDefense(),
+						base_spattack: self.baseSpAttack(),
+						base_spdefense: self.baseSpDefense(),
+						base_speed: self.baseSpeed(),
+						add_hp: self.addHp(),
+						add_attack: self.addAttack(),
+						add_defense: self.addDefense(),
+						add_spattack: self.addSpAttack(),
+						add_spdefense: self.addSpDefense(),
+						add_speed: self.addSpeed(),
+						total_hp: self.totalHp(),
+						total_attack: self.totalAttack(),
+						total_defense: self.totalDefense(),
+						total_spattack: self.totalSpAttack(),
+						total_spdefense: self.addSpDefense(),
+						total_speed: self.totalSpeed(),
+						min: 'Math.min',
+						max: 'Math.max',
+						floor: 'Math.floor',
+						ceil: 'Math.ceil',
+						attack_stages: self.attackCombatStages(),
+						defense_stages: self.defenseCombatStages(),
+						spattack_stages: self.spAttackCombatStages(),
+						spdefense_stages: self.spDefenseCombatStages(),
+						speed_stages: self.speedCombatStages()
+					};
+
+					const templateRegex = /{(\w*)}/g
+					
+					return input.replace(templateRegex, function (_match, p1) {
+						const replacementValue = replacementValues[p1];
+
+						return replacementValue === undefined ? 9999: replacementValue;
+					});
 				}
 				
 				self.maxHealth = ko.computed(function() {
@@ -735,7 +744,7 @@
 
 				self.moveList = ko.observableArray([]);
 				@foreach($pkmn->moves()->get() as $mv)
-				self.moveList.push({"uniq_id": {{$mv->id}}, "move_id": {{$mv->definition()->id}},  "name": "{{$mv->definition()->name}}", "icon": "{{$mv->icon()}}", "ptu_move_frequency": "{{is_null($mv->definition()->PTUDefinition()->first()) ? '???' : $mv->definition()->PTUDefinition()->first()->frequency}}", "frequency": "{{$mv->definition()->frequency}}", "ppUp" : ko.observable({{$mv->ppUp}}), "isTutor": ko.observable({{$mv->isTutor}}), "contestEffect": "{{$mv->definition()->contestEffect()->name}}", "contestType": "{{$mv->definition()->contest_type}}", "contestDice": {{$mv->definition()->contest_dice}}})
+				self.moveList.push({"uniq_id": {{$mv->id}}, "move_id": {{$mv->definition()->id}},  "name": "{{$mv->definition()->name}}", "icon": "{{$mv->icon()}}", "ptu_move_frequency": "{{is_null($mv->definition()->PTUDefinition()->first()) ? '???' : $mv->definition()->PTUDefinition()->first()->frequency}}", "frequency": "{{$mv->definition()->frequency}}", "ppUp" : ko.observable({{$mv->ppUp}}), "isTutor": ko.observable({{$mv->is_tutor}}), "contestEffect": "{{$mv->definition()->contestEffect()->name}}", "contestType": "{{$mv->definition()->contest_type}}", "contestDice": {{$mv->definition()->contest_dice}}})
 				@endforeach
 
 				$(document).on('click', ".move-shell", function() {
@@ -1039,7 +1048,7 @@
 					var source = this;
 					if($(this).typeahead("val")[0] != undefined) {
 						$.getJSON("/api/v1/pokemon/" + id + "/insert/move/" + $(this).typeahead("val")[0].replace(' ', '-'), function(data) {
-							self.moveList.push({"uniq_id":data.uniq_id, "move_id": data.id, "name": data.name, "icon": "/imags/types/" + data.type.toLowerCase() + ".png", "ptu_move_frequency": data.ptu_move_frequency, "frequency": data.frequency, "ppUp": ko.observable(false),
+							self.moveList.push({"uniq_id":data.uniq_id, "move_id": data.id, "name": data.name, "icon": "/images/types/" + data.type.toLowerCase() + ".png", "ptu_move_frequency": data.ptu_move_frequency, "frequency": data.frequency, "ppUp": ko.observable(false),
 										"isTutor": ko.observable(false), "contestEffect": data.contest_effect, "contestType": data.contest_type, "contestDice": data.contest_dice})
 
 

@@ -5,7 +5,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>@if(isset($user)) {{ $user->countNewMessages() > 0 ? '('.$user->countNewMessages().')' : ''}} @endif @yield('title')</title>
-		<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,400italic' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Lato:300,400,700,400italic' rel='stylesheet' type='text/css'>
 		<link href='/font-awesome/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
 		<link href="/css/main.css" rel="stylesheet" type="text/css">
 		@yield('includes')
@@ -14,7 +14,7 @@
 	
 		<div class="navbar">
 			<a class="nav-title" href="/">Pokemon Manager 2</a>
-			<a class="nav-item" href="/trainers/1">Active Trainers</a>
+			<a class="nav-item" href="/trainers/2">Active Trainers</a>
 			@if(isset($user))
 			
 			@if($user->isGM()) <a class="nav-item" href="/gmpanel/{{$user->getAllGMCampaigns()[0]->id}}">GM Panel </a>@endif

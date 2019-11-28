@@ -48,8 +48,8 @@ class HomeController extends BaseController {
 	}
 
 	public function setMOTD() {
-		file_put_contents('../motd.txt', Input::get('value'));
-		echo 'File Contents: '.file_get_contents('../motd.txt');
+		file_put_contents(__DIR__.'/../motd.txt', Input::get('value'));
+		echo 'File Contents: '.file_get_contents(__DIR__.'/../motd.txt');
 		MessageController::sendMessageToAllUsers(Auth::user()->id, 'News Updated', 'The game news has been updated.<br><br>'.Input::get('value'));
 	}
 

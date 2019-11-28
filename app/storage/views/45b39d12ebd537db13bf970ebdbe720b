@@ -19,7 +19,7 @@
 				self.sleep = ko.observable(false);
 				
 				self.healthFormula = ko.observable("<?php echo $campaign->health_formula; ?>");
-				self.isPTU = ko.observable(<?php echo $campaign->isPTU; ?>);
+				self.isPTU = ko.observable(<?php echo $campaign->is_ptu; ?>);
 
 				self.damageModifiers = ko.observableArray([
 					{name: "100%", value: -15},

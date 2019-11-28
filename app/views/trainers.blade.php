@@ -15,11 +15,6 @@
 					window.location = "/pokemon/" + $(this).attr("data-id");
 				}
 			});
-
-
-
-
-
 		});
 	</script>
 @stop

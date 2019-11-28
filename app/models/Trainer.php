@@ -26,17 +26,6 @@ class Trainer extends Eloquent {
 	public function belongsToGame($game) {
 		return $this->campaign()->id == $game;
 	}
-
-	public function primaryCampaign() {
-		$pkmn_array = $this->pokemon()->get();
-		if(count($pkmn_array) == 0) return false;
-		$out = array();
-		foreach($pkmn_array as $p) {
-			if(!isset($out[$p->legacy])) $out[$p->legacy] = 0;
-			$out[$p->legacy]++;
-		}
-		return array_keys($out, max($out))[0];
-	}
 }
 
 ?>

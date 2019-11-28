@@ -88,7 +88,7 @@ Route::post('createAccount', array('uses' => 'HomeController@createAccount'));
 Route::group(array('prefix' => 'api/v1',), function() {
 
 	Route::get('/campaign/search', 'HomeController@searchCampaigns');
-	Route::post('/campaign/{campaign}/formula/health/update', 'EditApiController@updateCampaignHealthFormula');
+	Route::post('/campaign/{campaign}/formulas/update', 'EditApiController@updateCampaignFormulas');
 	Route::post('/campaign/{campaign}/setting/ptu/update', 'EditApiController@updateCampaignSetIsPTU');
 
 	Route::any('/messages/seen/{id}', 'MessageController@markMessageAsRead');

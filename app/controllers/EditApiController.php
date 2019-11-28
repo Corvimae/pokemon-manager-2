@@ -6,7 +6,7 @@ class EditApiController extends BaseController {
 	}
 
 	public static function validateTrainer($user, $trainer) {
-		return ($trainer->user_id == $user->id || $user->isSpecificGM($trainer->primaryCampaign()));
+		return ($trainer->user_id == $user->id || $user->isSpecificGM($trainer->campaign()->id));
 	}
 
 	public function testFunction() {
@@ -35,21 +35,24 @@ class EditApiController extends BaseController {
 		return Response::json("Trainer campaign successfully updated");
 	}
 
-	public function updateCampaignHealthFormula($campaign) {
+	public function updateCampaignFormulas($campaign) {
 		$user = Auth::user();
 		$cmp = Campaign::find($campaign);
 		if(!$user->isSpecificGM($cmp->id)) return Response::json("Ownership mismatch");
-		$cmp->health_formula = Input::get('value');
+		$cmp->health_formula = Input::get('health');
+		$cmp->physical_evasion_formula = Input::get('physicalEvasion');
+		$cmp->special_evasion_formula = Input::get('specialEvasion');
+		$cmp->speed_evasion_formula = Input::get('speedEvasion');
 		$cmp->timestamps = false;
 		$cmp->save();
-		return Response::json('Health formula update successful');
+		return Response::json('Campaign formulas update successful');
 	}
 	
 	public function updateCampaignSetIsPTU($campaign) {
 		$user = Auth::user();
 		$cmp = Campaign::find($campaign);
 		if(!$user->isSpecificGM($cmp->id)) return Response::json("Ownership mismatch");
-		$cmp->isPTU = Input::get('value') == 'true' ? 1 : 0;
+		$cmp->is_ptu = Input::get('value') == 'true' ? 1 : 0;
 		$cmp->timestamps = false;
 		$cmp->save();
 		return Response::json('PTU setting update successful');		
@@ -95,7 +98,7 @@ class EditApiController extends BaseController {
 	public function giveToTrainer($id, $trainer) {
 		$user = Auth::user();
 		$pkmn = Pokemon::find($id);
-		if(!$user->isSpecificGM($pkmn->trainer()->campaign()->id)) return Response::json("Ownership mismatch");
+		if(!$user->isAdministrator() && $user->isSpecificGM($pkmn->trainer()->campaign()->id ?? -1)) return Response::json("Ownership mismatch");
 		$t_obj = Trainer::find($trainer);
 		$pkmn->user_id = $t_obj->user()->id;
 		$pkmn->trainer_id = $trainer;
@@ -146,7 +149,7 @@ class EditApiController extends BaseController {
 		$mv = Move::find($id);
 		$pkmn = Pokemon::where("id", "=", $mv->pokemon_id)->firstOrFail();
 		if(!EditApiController::validatePokemon($user, $pkmn)) return Response::json("Ownership mismatch");
-		$mv->typeOverride = $val;
+		$mv->type_override = $val;
 		$mv->timestamps = false;
 		$mv->save();
 		return Response::json(array("icon" => $mv->type()->icon()));
@@ -329,7 +332,7 @@ class EditApiController extends BaseController {
 		$abs->move = $abd->id;
 		$abs->pokemon_id = $id;
 		$abs->position = $max + 1;
-		$abs->isTutor = false;
+		$abs->is_tutor = false;
 		$abs->timestamps = false;
 		$abs->save();
 		$type = Type::where('id', '=', $abd->type)->first();
@@ -341,7 +344,7 @@ class EditApiController extends BaseController {
 		$mv = Move::find($id);
 		$pkmn = Pokemon::where("id", "=", $mv->pokemon_id)->firstOrFail();
 		if(!EditApiController::validatePokemon($user, $pkmn)) return Response::json("Ownership mismatch");
-		$mv->isTutor = $tutor;
+		$mv->is_tutor = $tutor;
 		$mv->timestamps = false;
 		$mv->save();
 		return Response::json("Tutor status update successful");

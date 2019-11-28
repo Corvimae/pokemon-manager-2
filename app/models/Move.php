@@ -8,15 +8,15 @@ class Move extends Eloquent {
 	}
 
 	public function type() {
-		if($this->typeOverride != 0) {
-			return Type::where("id", $this->typeOverride)->first();
+		if($this->type_override != 0) {
+			return Type::where("id", $this->type_override)->first();
 		}
 		return $this->definition()->type();
 	}
 
 	public function icon() {
 		if(!isset($this->type()->name)) return "";
-		return "/images/types".$this->type()->name.".png";
+		return "/images/types/".strtolower($this->type()->name).".png";
 	}
 
 }

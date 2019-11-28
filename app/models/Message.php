@@ -9,9 +9,11 @@ class Message extends Eloquent {
 	}
 	
 	public function seen() {
-		return !(int)$this->viewed_at ? 0 : 1;
+		return strcmp($this->viewed_at, '1901-01-01 00:00:00+00') > 0 ? 1 : 0;
 	}
-
+	protected function getDateFormat() {
+			return 'Y-m-d H:i:sO';
+	}
 }
 
 ?>

@@ -15,7 +15,7 @@ class CreatePlayerMovesTable extends Migration {
 			$table->increments('id');
 			$table->integer('owner');
 			$table->integer('move');
-			$table->boolean('isTutor');
+			$table->boolean('is_tutor');
 		});
 	}
 

@@ -602,7 +602,7 @@
 
 				self.moveList = ko.observableArray([]);
 				@foreach($pkmn->moves()->get() as $mv)
-				self.moveList.push({"uniq_id": {{$mv->id}}, "move_id": {{$mv->definition()->id}}, "name": "{{$mv->definition()->name}}", "icon": "{{$mv->icon()}}", "frequency": "{{$mv->definition()->frequency}}", "ppUp" : ko.observable({{$mv->ppUp}}), "isTutor": ko.observable({{$mv->isTutor}}), "contestEffect": "{{$mv->definition()->contestEffect()->name}}", "contestType": "{{$mv->definition()->contest_type}}", "contestDice": {{$mv->definition()->contest_dice}}})
+				self.moveList.push({"uniq_id": {{$mv->id}}, "move_id": {{$mv->definition()->id}}, "name": "{{$mv->definition()->name}}", "icon": "{{$mv->icon()}}", "frequency": "{{$mv->definition()->frequency}}", "ppUp" : ko.observable({{$mv->ppUp}}), "isTutor": ko.observable({{$mv->is_tutor}}), "contestEffect": "{{$mv->definition()->contestEffect()->name}}", "contestType": "{{$mv->definition()->contest_type}}", "contestDice": {{$mv->definition()->contest_dice}}})
 				@endforeach
 
 				$(document).on('click', ".move-shell", function() {

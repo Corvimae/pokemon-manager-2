@@ -120,7 +120,7 @@ class Pokemon extends Eloquent {
 
 	public function level() {
 		$xp = $this->experience;
-		if(!is_null($this->trainer()) && $this->trainer()->campaign()->isPTU) return $this->calculatePTULevel($xp);
+		if(!is_null($this->trainer()) && $this->trainer()->campaign()->is_ptu) return $this->calculatePTULevel($xp);
 		$level = min(100, 1+floor($xp/25)*($xp<50)+2*($xp>=50)+floor(($xp-50)/50)*($xp>50)*($xp<200)+3*($xp>=200)+floor(($xp-200)/200)*($xp>200)*($xp<1000)+4*($xp>=1000)+floor(($xp-1000)/500)*($xp>1000)*($xp<2000)+2*($xp>=2000)
 				+floor(($xp-2000)/1000)*($xp>2000)*($xp<10000)+8*($xp>=10000)+floor(($xp-10000)/1500)*($xp>10000)*($xp<25000)+10*($xp>=25000)+floor(($xp-25000)/2500)*($xp>25000)*($xp<50000)+10*($xp>=50000)
 				+floor(($xp-50000)/5000)*($xp>50000)*($xp<100000)+10*($xp>=100000)+floor(($xp-100000)/10000)*($xp>100000));
@@ -241,6 +241,10 @@ class Pokemon extends Eloquent {
 			case 1: return "Female";
 			default: return "None";
 		}
+	}
+
+	protected function getDateFormat() {
+    return 'Y-m-d H:i:sO';
 	}
 }
 
