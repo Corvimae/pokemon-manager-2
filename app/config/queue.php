@@ -75,7 +75,7 @@ return array(
 
 	'failed' => array(
 
-		'database' => 'mysql', 'table' => 'failed_jobs',
+		'database' => 'pgsql', 'table' => 'failed_jobs',
 
 	),
 

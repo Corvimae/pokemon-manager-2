@@ -1,4 +1,4 @@
-<?
+<?php
 
 class Type extends Eloquent {
 	protected $table = 'pokemon_types';
@@ -25,7 +25,7 @@ class Type extends Eloquent {
 	);
 
 	public function icon() {
-		return "http://cdn.acceptableice.com/pkmn/type-badges/".$this->name.".png";
+		return "/images/types/".strtolower($this->name).".png";
 	}
 
 	public function getOffensiveEffectiveness() {

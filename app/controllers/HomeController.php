@@ -15,7 +15,7 @@ class HomeController extends BaseController {
 		$pkmn->gender = 1;
 		$pkmn->type1 = 1;
 		$pkmn->type2 = 1;
-		$pkmn->notes = "Nothing to say, apparently.";
+		$pkmn->notes = "";
 		$pkmn->current_health = 0;
 		$pkmn->position = Pokemon::where('user_id', $user->id)->max('position');
 		if(!isset($pkmn->position)) $pkmn->position = 0;
@@ -23,7 +23,7 @@ class HomeController extends BaseController {
 
 		$base = new StatList;
 		$base->pokemon_id = $pkmn->id;
-		$base->isBase = 1;
+		$base->is_base = 1;
 		$base->timestamps = false;
 		$base->save();
 
@@ -72,7 +72,7 @@ class HomeController extends BaseController {
 	public function doLogin() {
 		$rules = array(
 			'username' => 'required',
-			'password' => 'required|alphaNum|min:3'
+			'password' => 'required|min:3'
 		);
 
 		$validator = Validator::make(Input::all(), $rules);
@@ -95,14 +95,13 @@ class HomeController extends BaseController {
 	public function createAccount() {
 		$rules = array(
 			'register_username' => 'required|unique:accounts,username',
-			'register_password' => 'required|alphaNum|min:5|confirmed',
+			'register_password' => 'required|min:5|confirmed',
 			'register_email' => 'required|unique:accounts,email|email'
 		);
 
 		$validator = Validator::make(Input::all(), $rules);
-		$validator->getPresenceVerifier()->setConnection('user_sql');
 		if($validator->fails()) {
-			return Redirect::to('login')->withErrors($validator)->withInput(Input::except('password'));
+			return Redirect::to('login')->withErrors($validator)->withInput(Input::except('password'))->with('mode', 1);
 		} else {
 			$user = new User;
 			$user->username = Input::get('register_username');

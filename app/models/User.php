@@ -4,7 +4,6 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
 
 class User extends Eloquent implements UserInterface, RemindableInterface {
-	protected $connection = 'user_sql';
 	protected $table = "accounts";
 
 	protected $primaryKey = 'id';
@@ -86,7 +85,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return $this->hasMany('Message')->orderBy('created_at', 'desc');
 	}
     public function newMessages() {
-        return $this->messages()->where('viewed_at', '=', date('0000-00-00 00:00:00'))->orderBy('created_at', 'desc');
+        return $this->messages()->where('viewed_at', '=', date('1901-01-01 00:00:00'))->orderBy('created_at', 'desc');
     }
     public function countNewMessages() {
         return count($this->newMessages()->get());

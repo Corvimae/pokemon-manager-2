@@ -821,7 +821,7 @@
 	</script>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
-<? $isGM = Auth::user()->isSpecificGM($pkmn->legacy); ?>
+<?php $isGM = Auth::user()->isSpecificGM($pkmn->legacy); ?>
 	<div id="type-picker">
 		<?php foreach(Type::All() as $t): ?>
 			<img class="type-badge type-pick-item" data-id="<?php echo $t->id; ?>" src="<?php echo $t->icon(); ?>"> 

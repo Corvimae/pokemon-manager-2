@@ -1,4 +1,4 @@
-<?
+<?php
 
 class StatList extends Eloquent {
 	protected $table = 'player_pokemon_stats';

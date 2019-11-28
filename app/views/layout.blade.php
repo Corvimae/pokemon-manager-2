@@ -1,4 +1,4 @@
-<? $user = Auth::user(); 
+<?php $user = Auth::user(); 
 
 ?>
 <html>
@@ -6,8 +6,8 @@
 		<meta charset="UTF-8">
 		<title>@if(isset($user)) {{ $user->countNewMessages() > 0 ? '('.$user->countNewMessages().')' : ''}} @endif @yield('title')</title>
 		<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,400italic' rel='stylesheet' type='text/css'>
-		<link href='font-awesome/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
-		<link href="css/main.css" rel="stylesheet" type="text/css">
+		<link href='/font-awesome/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
+		<link href="/css/main.css" rel="stylesheet" type="text/css">
 		@yield('includes')
 	</head>
 	<body>
@@ -26,9 +26,9 @@
 
 		</div>
 		@yield('content')
-		<script src="js/jquery-2.1.0.js"></script>
-		<script src="js/knockout.js"></script>
-		<script src="js/knockout.bindings.typeahead.min.js"></script>
+		<script src="/js/jquery-2.1.0.js"></script>
+		<script src="/js/knockout.js"></script>
+		<script src="/js/knockout.bindings.typeahead.min.js"></script>
 
 		@yield('script')
 	</body>

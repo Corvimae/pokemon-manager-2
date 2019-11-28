@@ -20,7 +20,7 @@ class CreateStatsTable extends Migration {
 			$table->smallInteger('spattack');
 			$table->smallInteger('spdefense');
 			$table->smallInteger('speed');
-			$table->boolean('isBase');
+			$table->boolean('is_base');
 		});
 	}
 

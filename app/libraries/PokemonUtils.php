@@ -1,4 +1,4 @@
-<?
+<?php
 class PokemonUtils {
 	public static function convertIntToStat($in) {
 		switch($in) {

@@ -1,4 +1,4 @@
-<?
+<?php
 
 class Trainer extends Eloquent {
 	protected $table = 'player_trainers';

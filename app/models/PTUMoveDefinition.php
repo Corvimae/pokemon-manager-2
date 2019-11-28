@@ -1,4 +1,4 @@
-<?
+<?php
 
 class PTUMoveDefinition extends Eloquent {
 	protected $table = 'ptu_pokemon_moves';

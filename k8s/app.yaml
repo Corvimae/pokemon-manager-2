@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pokemon-manager
+  labels:
+    app: pokemon-manager
+    version: 1.0.0
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pokemon-manager
+  template:
+    metadata:
+      labels:
+        app: pokemon-manager
+    spec:
+      containers:
+      - name: pokemon-manager
+        image: corvimae/pokemon-manager-2:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: PG_HOST
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: host
+        - name: PG_PORT
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: port
+        - name: PG_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: username
+        - name: PG_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: password
+        - name: PG_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: database 

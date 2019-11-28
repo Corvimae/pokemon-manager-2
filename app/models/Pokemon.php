@@ -1,4 +1,4 @@
-<?
+<?php
 
 class Pokemon extends Eloquent {
 	protected $table = 'player_pokemon_data';
@@ -44,11 +44,11 @@ class Pokemon extends Eloquent {
 	}
 
 	public function baseStats() {
-		return $this->stats()->where('isBase', '=', '1')->first();
+		return $this->stats()->where('is_base', '=', '1')->first();
 	}
 
 	public function addStats() {
-		return $this->stats()->where('isBase', '=', '0')->first();
+		return $this->stats()->where('is_base', '=', '0')->first();
 	}
 
 

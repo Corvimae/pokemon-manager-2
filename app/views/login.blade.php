@@ -11,7 +11,7 @@ $(function() {
 
 	function loginVM() {
 		var self = this;
-		self.loginMode = ko.observable(0);
+		self.loginMode = ko.observable({{ Session::get("mode") ?: 0 }});
 
 		self.setLoginMode = function(mode) {
 			self.loginMode(mode);

@@ -214,7 +214,7 @@
 			<div class="ammunition">AMMUNITION</div><div class="ammunition-blank"></div><div class="spacer"></div>@for($i = 0; $i < 30; $i++) <div class="ammunition-box"></div> @if($i % 5 == 4) <div class="spacer"></div> @endif @endfor
 		</div>
 	</div>
-	<? $skills = array(
+	<?php $skills = array(
 		array("name" => "APPRAISE", "key" => "INT", "stat" => $pkmn->getModifierForStat($pkmn->totalStats()->spattack), "trained" => true),
 		array("name" => "BALANCE", "key" => "DEX*", "stat" => $pkmn->getModifierForStat($pkmn->totalStats()->attack), "trained" => true),
 		array("name" => "BLUFF", "key" => "CHA", "stat" => $pkmn->getModifierForStat($pkmn->totalStats()->speed), "trained" => true),

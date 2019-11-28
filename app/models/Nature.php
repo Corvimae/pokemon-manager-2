@@ -1,4 +1,4 @@
-<?
+<?php
 
 class Nature extends Eloquent {
 	protected $table = 'pokemon_natures';

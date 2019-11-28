@@ -21,12 +21,12 @@
 			<span class="permission-title">{{count($user->pokemon()->where('active', 1)->get())}} active.</span>
 		</div>
 		<div class="stat-row permission-row">
-			<? $recent = $user->pokemon()->orderBy('updated_at', 'DESC')->first(); ?>
+			<?php $recent = $user->pokemon()->orderBy('updated_at', 'DESC')->first(); ?>
 			<span class="permission-title">Most recently edited: <a href="/pokemon/{{$recent->id}}">{{$recent->name}}</a></span>
 
 		</div>
 		<div class="stat-row permission-row">
-			<? $newest = $user->pokemon()->orderBy('created_at', 'DESC')->first(); ?>
+			<?php $newest = $user->pokemon()->orderBy('created_at', 'DESC')->first(); ?>
 			<span class="permission-title">Newest: <a href="/pokemon/{{$newest->id}}">{{$newest->name}}</a></span>
 		</div>
 

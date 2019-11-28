@@ -822,7 +822,7 @@
 	</script>
 @stop
 @section('content')
-<? $isGM = Auth::user()->isSpecificGM($pkmn->legacy); ?>
+<?php $isGM = Auth::user()->isSpecificGM($pkmn->legacy); ?>
 	<div id="type-picker">
 		@foreach(Type::All() as $t)
 			<img class="type-badge type-pick-item" data-id="{{$t->id}}" src="{{$t->icon()}}"> 

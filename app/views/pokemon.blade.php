@@ -1039,7 +1039,7 @@
 					var source = this;
 					if($(this).typeahead("val")[0] != undefined) {
 						$.getJSON("/api/v1/pokemon/" + id + "/insert/move/" + $(this).typeahead("val")[0].replace(' ', '-'), function(data) {
-							self.moveList.push({"uniq_id":data.uniq_id, "move_id": data.id, "name": data.name, "icon": "http://cdn.acceptableice.com/pkmn/type-badges/" + data.type + ".png", "ptu_move_frequency": data.ptu_move_frequency, "frequency": data.frequency, "ppUp": ko.observable(false),
+							self.moveList.push({"uniq_id":data.uniq_id, "move_id": data.id, "name": data.name, "icon": "/imags/types/" + data.type.toLowerCase() + ".png", "ptu_move_frequency": data.ptu_move_frequency, "frequency": data.frequency, "ppUp": ko.observable(false),
 										"isTutor": ko.observable(false), "contestEffect": data.contest_effect, "contestType": data.contest_type, "contestDice": data.contest_dice})
 
 
@@ -1061,7 +1061,7 @@
 	</script>
 @stop
 @section('content')
-<? $isGM = Auth::user()->isSpecificGM($pkmn->campaign()->id); ?>
+<?php $isGM = Auth::user()->isSpecificGM($pkmn->campaign()->id); ?>
 	<div id="type-picker">
 		@foreach(Type::All() as $t)
 			<img class="type-badge type-pick-item" data-id="{{$t->id}}" src="{{$t->icon()}}"> 

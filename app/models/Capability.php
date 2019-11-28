@@ -1,4 +1,4 @@
-<?
+<?php
 
 class Capability extends Eloquent {
 	protected $table = 'player_pokemon_capabilities';

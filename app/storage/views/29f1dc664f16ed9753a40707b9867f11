@@ -1,4 +1,4 @@
-<? $user = Auth::user(); 
+<?php $user = Auth::user(); 
 
 ?>
 <html>

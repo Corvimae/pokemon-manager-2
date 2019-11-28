@@ -7,7 +7,7 @@ $(function() {
 		var self = this;
 		
 		self.messages = ko.observableArray([]);
-		<? $messages = $showUnread ? Auth::user()->newMessages()->get() : 
+		<?php $messages = $showUnread ? Auth::user()->newMessages()->get() : 
 									 Auth::user()->messages()->get() ?>
 		@foreach($messages as $msg)
 			self.messages.push({"id": {{$msg->id}}, "from": "{{$msg->from()}}", "subject": "{{addslashes($msg->subject)}}", "content": "{{addslashes($msg->content)}}", "date": "{{$msg->created_at->diffForHumans()}}", "seen": ko.observable({{$msg->seen()}})});

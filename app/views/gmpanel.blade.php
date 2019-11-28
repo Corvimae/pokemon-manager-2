@@ -74,7 +74,7 @@
 	</script>
 @stop
 @section('content')
-<? 	$game = $campaign->id ?>
+<?php	$game = $campaign->id ?>
 	<div class="pkmn-name"><div class="user-title">{{$campaign->name}} GM Panel</div></div>
 	<div class="stat-row">
 	<div class="row-title">Other Panels</div><div class="row-content">
@@ -106,7 +106,7 @@
 			
 				<li>There are {{count($active_pkmn)}} active Pokemon</li>
 
-				<? 
+				<?php
 					$most_recent_val = date(0);
 					$most_recent_item = null;
 					$highest_val = 0;
@@ -137,7 +137,7 @@
 				
 				
 				@if(count($active_pkmn) != 0)
-				<?  
+				<?php 
 
 				$avg_level = $total_level / count($active_pkmn);
 				$avg_loyalty = $total_loyalty / count($active_pkmn);
@@ -184,7 +184,7 @@
 		<div class="panel-frame trainer-list">
 			<div class="panel-title" style="margin-bottom: 10px">User Data</div>
 				@foreach(DB::table('player_pokemon_data')->groupBy('user_id')->get() as $p)
-					<? $activeUser = User::find($p->user_id); ?>
+					<?php $activeUser = User::find($p->user_id); ?>
 					@if($activeUser->belongsToGame($game)) <div class="stat-row gm-user-row"><a href='/user/{{$activeUser->id}}'>{{$activeUser->username}}</a></div> @endif
 				@endforeach
 		</div>

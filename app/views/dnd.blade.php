@@ -216,7 +216,7 @@
 		</div>
 		@endforeach
 	</div>
-	<? $skills = array(
+	<?php $skills = array(
 		array("name" => "APPRAISE", "key" => "INT", "stat" => $pkmn->getModifierForStat($pkmn->totalStats()->spattack), "trained" => true),
 		array("name" => "BALANCE", "key" => "DEX*", "stat" => $pkmn->getModifierForStat($pkmn->totalStats()->attack), "trained" => true),
 		array("name" => "BLUFF", "key" => "CHA", "stat" => $pkmn->getModifierForStat($pkmn->totalStats()->speed), "trained" => true),

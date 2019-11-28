@@ -1,4 +1,4 @@
-<?
+<?php
 
 class MoveDefinition extends Eloquent {
 	protected $table = 'pokemon_moves';
