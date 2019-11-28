@@ -1,3 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pokemon-manager-service
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: pokemon-manager
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -6,7 +18,7 @@ metadata:
     app: pokemon-manager
     version: 1.0.0
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: pokemon-manager

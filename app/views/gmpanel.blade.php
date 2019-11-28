@@ -87,7 +87,7 @@
 		<div class="panel-frame">
 			<div class="panel-title">Statistics</div>
 			<ul class="gm-stats">
-				<?
+				<?php
 					$trainers = array();
 					foreach(Trainer::all() as $t) {
 						if($t->belongsToGame($game) && count($t->activePokemon()->get()) > 0) $trainers[] = $t;
@@ -95,7 +95,7 @@
 					
 				?>
 				<li>There are {{count($trainers)}} active Trainers</li>
-				<?
+				<?php
 					$active_pkmn = array();
 					foreach($trainers as $t) {
 						foreach($t->activePokemon()->get() as $p) {
