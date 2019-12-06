@@ -185,7 +185,6 @@
 					} else {
 						$.getJSON("/api/v1/pokemon/" + id + "/insert/ability/" + $(this).typeahead("val")[0].replace(' ', '-'), function(data) {
 							 $(base).parents(".ability-row").attr("data-id", data);
-							 console.log(data);
 						});
 					}
 				});
@@ -468,7 +467,7 @@
 				self.specialEvasionFormula = ko.observable("{{$pkmn->campaign()->special_evasion_formula}}");
 				self.speedEvasionFormula = ko.observable("{{$pkmn->campaign()->speed_evasion_formula}}");
 
-				self.ruleset = ko.observable({{$pkmn->campaign()->is_ptu}});
+				self.ruleset = ko.observable({{$pkmn->campaign()->is_ptu ? 1 : 0}});
 				
 				self.campaign = ko.observable({id: {{$pkmn->campaign()->id}}, name: "{{$pkmn->campaign()->name}}"});
 				
@@ -479,10 +478,6 @@
 
 				self.name = ko.observable("{{$pkmn->name}}");
 				self.experience = ko.observable({{$pkmn->experience}});
-
-				self.experience.subscribe(function() {
-					console.log('update!');
-				})
 
 				self.selectedMove = ko.observable();
 
@@ -690,12 +685,8 @@
 						total_attack: self.totalAttack(),
 						total_defense: self.totalDefense(),
 						total_spattack: self.totalSpAttack(),
-						total_spdefense: self.addSpDefense(),
+						total_spdefense: self.totalSpDefense(),
 						total_speed: self.totalSpeed(),
-						min: 'Math.min',
-						max: 'Math.max',
-						floor: 'Math.floor',
-						ceil: 'Math.ceil',
 						attack_stages: self.attackCombatStages(),
 						defense_stages: self.defenseCombatStages(),
 						spattack_stages: self.spAttackCombatStages(),
@@ -703,13 +694,24 @@
 						speed_stages: self.speedCombatStages()
 					};
 
+					const commands = {
+						min: 'Math.min',
+						max: 'Math.max',
+						floor: 'Math.floor',
+						ceil: 'Math.ceil',
+					}
+
 					const templateRegex = /{(\w*)}/g
 					
-					return input.replace(templateRegex, function (_match, p1) {
+					const templateReplaced = input.replace(templateRegex, function (_match, p1) {
 						const replacementValue = replacementValues[p1];
 
 						return replacementValue === undefined ? 9999: replacementValue;
-					});
+					})
+					
+					return Object.entries(commands).reduce(function (acc, [from, to]) {
+						return acc.split(from).join(to);
+					}, templateReplaced);
 				}
 				
 				self.maxHealth = ko.computed(function() {
@@ -763,7 +765,6 @@
 									effect: data.base.effects,
 									move_type: data.base.type
 								});
-								console.log(self.selectedMove());
 								//$(".popover .popover-content").html("<b>Accuracy: </b>" + data.base.ac + "<br><b>Range: </b>" + data.base.attack_range + ", " + (data.base.attack_type == 0 ? "Attack" : "Sp. Attack") + (data.base.damage != '-' ? "<br><b>Damage: </b>" + data.base.damage : "") + "<br><br>" + data.base.effects);
 							} else {
 								if(data.ptu == undefined) {
@@ -800,7 +801,6 @@
 
 				$(document).click(function(ev) {
 					if(ev.target.id != "type-picker") $("#type-picker").hide();
-					console.log($(ev.target).parents("editPanel").length);
 					if($(ev.target).parents("#editPanel").length == 0 && $(ev.target).parents("#editGear").length == 0) self.showOptionPanel(false);
 					if($(ev.target).parents("#notePanel").length == 0&& $(ev.target).parents("#editNotes").length == 0) self.showNotesPanel(false);
 				});
@@ -921,15 +921,15 @@
 				}
 
 				self.isOverAllocated = ko.computed(function() {
-					return self.ruleset() == 0 ? self.totalStatPoints() > self.level() - 1 : self.totalStatPoints() > self.level() + 10;
+					return self.ruleset() == 0 ? self.totalStatPoints() > self.level() : self.totalStatPoints() > self.level() + 10;
 				});
 
 				self.isUnderAllocated = ko.computed(function() {
-					return self.ruleset() == 0 ? self.totalStatPoints() < self.level() - 1 : self.totalStatPoints() < self.level() + 10;
+					return self.ruleset() == 0 ? self.totalStatPoints() < self.level() : self.totalStatPoints() < self.level() + 10;
 				});
 
 				self.remainingStatPoints = ko.computed(function() {
-					return self.ruleset() == 0 ? self.level() - 1 - self.totalStatPoints() : self.level() + 10 - self.totalStatPoints();
+					return self.ruleset() == 0 ? self.level() - self.totalStatPoints() : self.level() + 10 - self.totalStatPoints();
 				});
 
 				self.showNotificationAlert = ko.computed(function() {
@@ -1145,13 +1145,13 @@
 	<div class="left-set">
 		<div class="pkmn-name name-row">
 			<div class="display-row">
-				<span class="name" data-bind="text: $root.name()"></span><span class="level" data-bind="text: 'Level ' + $root.level()"> </span><div class="substat" data-bind="text: $root.experience() + ' XP'"></div>
+				<span class="name" data-bind="text: $root.name"></span><span class="level" data-bind="text: 'Level ' + $root.level()"> </span><div class="substat" data-bind="text: $root.experience() + ' XP'"></div>
 				<div class="edit-gear" id="editGear" data-bind="click: $root.toggleOptionsPanel"><i class="fa fa-cog"></i></div>
 				<div class="edit-notes" id="editNotes" data-bind="click: $root.toggleNotesPanel"><i class="fa fa-file-text"></i></div>
 				<div class="notification-alert hideOnLoad" data-bind="visible: $root.showNotificationAlert, css: {'hideOnLoad': false}"><i class="fa fa-exclamation"></i></div>
 			</div>
 			<div class="edit-row">
-				<input class='stat-input name-input' id='nameEdit' data-bind="value: $root.name()">
+				<input class='stat-input name-input' id='nameEdit' data-bind="value: $root.name">
 				<div class='species-input-shell'><input class='stat-input species-input' id='speciesEdit' value="{{$pkmn->species()->name}}"></div>
 				<span class="level edit-level" data-bind="text: 'Level ' + $root.level()"></span>
 				<div class="substat"><input class='stat-input xp-input' id="setXP" data-bind="value: $root.experience"> XP</div>
