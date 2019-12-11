@@ -2,7 +2,7 @@
 class EditApiController extends BaseController {
 
 	public static function validatePokemon($user, $pkmn) {
-		return ($pkmn->user_id == $user->id || $user->isSpecificGM($pkmn->legacy));
+		return ($pkmn->user_id == $user->id || $user->isSpecificGM($pkmn->campaign()->id));
 	}
 
 	public static function validateTrainer($user, $trainer) {
