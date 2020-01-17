@@ -2,7 +2,7 @@
 class EditApiController extends BaseController {
 
 	public static function validatePokemon($user, $pkmn) {
-		return ($pkmn->user_id == $user->id || $user->isSpecificGM($pkmn->campaign()->id));
+		return ($pkmn->user_id == $user->id || $user->isSpecificGM($pkmn->campaign()->id ?? -1));
 	}
 
 	public static function validateTrainer($user, $trainer) {
@@ -98,7 +98,7 @@ class EditApiController extends BaseController {
 	public function giveToTrainer($id, $trainer) {
 		$user = Auth::user();
 		$pkmn = Pokemon::find($id);
-		if(!$user->isAdministrator() && $user->isSpecificGM($pkmn->trainer()->campaign()->id ?? -1)) return Response::json("Ownership mismatch");
+		if(!$user->isAdministrator() && !$user->isSpecificGM($pkmn->campaign()->id ?? -1)) return Response::json("Ownership mismatch");
 		$t_obj = Trainer::find($trainer);
 		$pkmn->user_id = $t_obj->user()->id;
 		$pkmn->trainer_id = $trainer;

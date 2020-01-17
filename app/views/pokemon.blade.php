@@ -385,24 +385,6 @@
 
 			//---------------
 
-			$(document).on('click', ".capability-shell", function() {
-				if(editMode) return;
-				$.getJSON("/api/v1/capabilities/" + $(this).attr("data-id"), function(data) {
-					$(".popover .popover-title").text(data.name);
-					$(".popover .popover-content").html(data.description);
-				});
-			});
-
-	
-
-			$(document).on('click', ".helditem-row", function() {
-				if(editMode) return;		
-				$.getJSON("/api/v1/helditems/" + $(this).attr("data-id"), function(data) {
-					$(".popover .popover-title").text(data.name);
-					$(".popover .popover-content").html(data.description);
-				});
-			});
-
 			function OptionsItem(name, description, options, method, selected) {
 				var out = {"name": name, "description": description, "options": options, "selected": ko.observable(selected)};
 				var sub = out.selected.subscribe(method);
@@ -717,8 +699,6 @@
 				self.maxHealth = ko.computed(function() {
 					return eval(self.replaceBrackets(self.healthFormula()));
 				});
-				
-		
 
 				self.speedEvasion = ko.computed(function() {
 					return eval(self.replaceBrackets(self.speedEvasionFormula()));
@@ -850,6 +830,30 @@
 						break;
 					}
 				});
+				
+				$(document).on('click', ".capability-shell", function() {
+					if(editMode) return;
+					$.getJSON("/api/v1/capabilities/" + $(this).attr("data-id"), function(data) {
+						self.selectedMove({
+							category: 'capability',
+							title: data.name,
+							effect: data.description
+						});
+					});
+				});
+
+	
+
+			$(document).on('click', ".helditem-row", function() {
+				if(editMode) return;		
+				$.getJSON("/api/v1/helditems/" + $(this).attr("data-id"), function(data) {
+					self.selectedMove({
+						category: 'capability',
+						title: data.name,
+						effect: data.description
+					});
+				});
+			});
 
 				$(document).on("click", ".move-type", function(e) {
 					if(!editMode) return;
