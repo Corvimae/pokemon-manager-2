@@ -4,6 +4,10 @@
 	<link rel='stylesheet' type='text/css' href='/css/toggle-switch.css' />
 @stop
 @section('script')
+	<?php 
+		$user = Auth::user();
+		$isGM = $user ? $user->isSpecificGM($pkmn->campaign()->id) : false; 
+	?>
 	<script src="/js/typeahead.bundle.js"></script>
 	<script src="/js/jquery-ui-1.10.4.custom.min.js"></script>
 	<script type="text/javascript">
@@ -419,7 +423,7 @@
 
 				self.optionsItems.push(self.activeItem);
 
-				@if(Auth::user()->isSpecificGM($pkmn->legacy))
+				@if($isGM)
 				self.hiddenItem = new OptionsItem("Hidden", "Players can view the stats for this Pokemon.", ["Visible", "Hidden"], function(option) {
 					if(option == 0) {
 						$.getJSON("/api/v1/pokemon/" + id + "/update/hidden/0");
@@ -616,9 +620,9 @@
 
 				self.heldItem = ko.observable("{{$pkmn->heldItem()->name}}");
 
-				self.loyalty = ko.observable({{(Auth::user()->isSpecificGM($pkmn->campaign()->id) || Auth::user()->hasPermissionValue('Loyalty', $pkmn->campaign()->id)) ? $pkmn->loyalty : -9999}});
+				self.loyalty = ko.observable({{($isGM || ($user ? $user->hasPermissionValue('Loyalty', $pkmn->campaign()->id) : false)) ? $pkmn->loyalty : -9999}});
 
-				self.gmNotes = ko.observable("{{(Auth::user()->isSpecificGM($pkmn->campaign()->id)) ? str_replace(PHP_EOL, '\\n', $pkmn->gm_notes) : 'Hidden'}}");
+				self.gmNotes = ko.observable("{{$isGM ? str_replace(PHP_EOL, '\\n', $pkmn->gm_notes) : 'Hidden'}}");
 
 				self.contestMode = ko.observable(localStorage.getItem('contestMode') == "1");
 
@@ -782,7 +786,7 @@
 				$(document).click(function(ev) {
 					if(ev.target.id != "type-picker") $("#type-picker").hide();
 					if($(ev.target).parents("#editPanel").length == 0 && $(ev.target).parents("#editGear").length == 0) self.showOptionPanel(false);
-					if($(ev.target).parents("#notePanel").length == 0&& $(ev.target).parents("#editNotes").length == 0) self.showNotesPanel(false);
+					if($(ev.target).parents("#notePanel").length == 0 && $(ev.target).parents("#editNotes").length == 0) self.showNotesPanel(false);
 				});
 
 				$("#trainer-give-submit").click(function() {
@@ -1074,13 +1078,12 @@
 	</script>
 @stop
 @section('content')
-<?php $isGM = Auth::user()->isSpecificGM($pkmn->campaign()->id); ?>
 	<div id="type-picker">
 		@foreach(Type::All() as $t)
 			<img class="type-badge type-pick-item" data-id="{{$t->id}}" src="{{$t->icon()}}"> 
 		@endforeach
 	</div>
-	@if($pkmn->user_id == Auth::user()->id || $isGM) <div class="edit-button">Edit</div> @endif
+	@if($pkmn->user_id == ($user ? $user->id : -1) || $isGM) <div class="edit-button">Edit</div> @endif
 	<div class="popover" data-bind="with: $root.selectedMove">
 		<div class="popover-title" data-bind="text: title"></div>
 		<div class="popover-content">
