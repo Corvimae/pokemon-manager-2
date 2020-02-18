@@ -331,6 +331,11 @@ class EditApiController extends BaseController {
 		$pkmn = Pokemon::find($id);
 		if(!EditApiController::validatePokemon($user, $pkmn)) return Response::json("Ownership mismatch");
 		$abd = AbilityDefinition::where('name', '=', str_replace('-', ' ', $val))->firstOrFail();
+
+		if(!$pkmn->abilities()->where('ability', '=', $abd->id)->get()->isEmpty()) {
+			return Response::json($abd->id);
+		}
+
 		$abs = new Ability;
 		$abs->ability = $abd->id;
 		$abs->pokemon_id = $id;

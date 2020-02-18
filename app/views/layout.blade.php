@@ -20,7 +20,7 @@
 			<?php $activeTrainer = $user->activeTrainer(); ?>
 			@if(!is_null($activeTrainer))
 				<ul class="active-trainer-pokemon">
-					@foreach($activeTrainer->pokemon()->get() as $pokemon)
+					@foreach($activeTrainer->activePokemon()->get() as $pokemon)
 						<li>
 							<a class="active-trainer-pokemon-link {{Request::is('pokemon/'.$pokemon->id) ? 'active' : ''}}" href="/pokemon/{{$pokemon->id}}">
 								<img src="{{$pokemon->species()->sprite()}}"/>
