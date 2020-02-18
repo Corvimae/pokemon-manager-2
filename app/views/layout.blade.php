@@ -1,4 +1,5 @@
-<?php $user = Auth::user(); 
+<?php
+	$user = Auth::user(); 
 
 ?>
 <html>
@@ -16,13 +17,28 @@
 			<a class="nav-title" href="/">Pokemon Manager 2</a>
 			<a class="nav-item" href="/trainers/2">Active Trainers</a>
 			@if(isset($user))
-			
-			@if($user->isGM()) <a class="nav-item" href="/gmpanel/{{$user->getAllGMCampaigns()[0]->id}}">GM Panel </a>@endif
-			<a class="nav-messages {{$user->countNewMessages() > 0 ? 'active' : ''}}" href="{{$user->countNewMessages() > 0 ? '/messages/unread' : '/messages'}}"><i class="fa fa-envelope"></i></a>
-			@if($user->countNewMessages() > 0) <a class="nav-new-messages" href="{{$user->countNewMessages() > 0 ? '/messages/unread' : '/messages'}}">{{$user->countNewMessages()}}</a>@endif
-			
-			<a class="nav-exit" href="/logout">Logout</a>
+			<?php $activeTrainer = $user->activeTrainer(); ?>
+			@if(!is_null($activeTrainer))
+				<ul class="active-trainer-pokemon">
+					@foreach($activeTrainer->pokemon()->get() as $pokemon)
+						<li>
+							<a class="active-trainer-pokemon-link {{Request::is('pokemon/'.$pokemon->id) ? 'active' : ''}}" href="/pokemon/{{$pokemon->id}}">
+								<img src="{{$pokemon->species()->sprite()}}"/>
+								
+							</a>
+						</li>
+					@endforeach
+				</ul>
 			@endif
+
+			@if($user->isGM()) <a class="nav-item" href="/gmpanel/{{$user->getAllGMCampaigns()[0]->id}}">GM Panel </a>@endif
+			<div class="nav-right">
+				<a class="nav-messages {{$user->countNewMessages() > 0 ? 'active' : ''}}" href="{{$user->countNewMessages() > 0 ? '/messages/unread' : '/messages'}}"><i class="fa fa-envelope"></i></a>
+				@if($user->countNewMessages() > 0) <a class="nav-new-messages" href="{{$user->countNewMessages() > 0 ? '/messages/unread' : '/messages'}}">{{$user->countNewMessages()}}</a>@endif
+				
+				<a class="nav-exit nav-item" href="/logout">Logout</a>
+				@endif
+			</div>	
 
 		</div>
 		@yield('content')

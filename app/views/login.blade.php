@@ -30,7 +30,7 @@ $(function() {
 			</div>
 			
 			<div class="form-holder">
-			{{ Form::open(array('url' => 'login', 'autocomplete' => 'off')) }}
+			{{ Form::open(array('url' => URL::to('login', array(), Request::secure()), 'autocomplete' => 'off')) }}
 
 				<p class="login-errors"> 
 					{{ $errors->first('username') }}
@@ -54,7 +54,7 @@ $(function() {
 				<div class="mode-switch" data-bind="click: function() { return $root.setLoginMode(0); }">...or login to an existing account.</div>
 			</div>
 			<div class="form-holder">
-			{{ Form::open(array('url' => 'createAccount', 'autocomplete' => 'off')) }}
+			{{ Form::open(array('url' => URL::to('createAccount', array(), Request::secure()), 'autocomplete' => 'off')) }}
 
 			<p>
 				{{ $errors->first('register_username') }}

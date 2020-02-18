@@ -40,6 +40,12 @@
 				});
 			});
 			
+			$("#setActive").click(function() {
+				$.getJSON("/api/v1/trainer/{{$trainer->id}}/active", function(data) {
+					location.reload();
+				});
+			});
+
 			$("#campaignSelector").select2({
 				placeholder: 'Search for a Campaign',
 				minimumInputLength: 5,
@@ -93,6 +99,13 @@
 	@endif
 
 	<div class="stat-row"><div class="row-title">Campaign</div><div class="row-content"><hidden id="campaignSelector"></div></div>
+	<div class="stat-row action-row">
+		@if($trainer->is_active)
+		{{$trainer->name}} is your active trainer.
+		@else
+		<button id="setActive" class="submit">Set {{$trainer->name}} as your active trainer.</button>
+		@endif
+	</div>
 
 	<div class="pkmn-records trainer-pkmn-record" data-id="0">
 		<div class="stat-row header-row"><div class="row-title">Pokemon</div></div>

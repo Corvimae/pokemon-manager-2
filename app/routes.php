@@ -136,6 +136,7 @@ Route::group(array('prefix' => 'api/v1',), function() {
 	Route::any('/trainer/add/{name}', 'EditApiController@addTrainer');
 	Route::any('/trainer/{trainer}/class/add/{class}', 'EditApiController@addTrainerClass');
 	Route::any('/trainer/{trainer}/campaign/update/{campaign}', 'EditApiController@updateTrainerCampaign');
+	Route::any('/trainer/{trainer}/active', 'EditApiController@setTrainerAsActive');
 	
 	Route::post('/gm/motd', 'HomeController@setMOTD');
 	Route::post('/pokemon/{id}/update/notes', 'EditApiController@setNotes');

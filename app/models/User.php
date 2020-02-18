@@ -33,6 +33,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return $this->hasMany('Trainer');
     }
 
+		public function activeTrainer() {
+			return $this->trainers()->where('is_active', '=', true)->first();
+		}
+		
     public function belongsToGame($game) {
         foreach($this->trainers()->get() as $t) {
             if($t->belongsToGame($game) || $this->isSpecificGM($game)) return true;

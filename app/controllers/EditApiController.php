@@ -35,6 +35,23 @@ class EditApiController extends BaseController {
 		return Response::json("Trainer campaign successfully updated");
 	}
 
+	public function setTrainerAsActive($trainer) {
+		$user = Auth::user();
+		$trainer = Trainer::find($trainer);
+		if(!EditApiController::validateTrainer($user, $trainer)) return Response::json("Ownership mismatch");
+
+		foreach($user->trainers()->get() as $t) {
+			$t->is_active = false;
+			$t->timestamps = false;
+			$t->save();
+		}
+
+		$trainer->is_active = true;
+		$trainer->timestamps = false;
+		$trainer->save();
+		return Response::json("Trainer status successfully updated");
+	}
+	
 	public function updateCampaignFormulas($campaign) {
 		$user = Auth::user();
 		$cmp = Campaign::find($campaign);
