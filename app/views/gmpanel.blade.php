@@ -34,15 +34,11 @@
 				]);
 
 				self.wildModifiers = ko.observableArray([
-					{name: "1-5", value: 20},
-					{name: "6-10", value: 10},
-					{name: "11-20", value: 5},
-					{name: "21-30", value: 0},
-					{name: "31-40", value: -5},
-					{name: "41-60", value: -15},
-					{name: "61-80", value: -25},
-					{name: "81-99", value: -35},
-					{name: "100", value: -40}
+					{name: "1-20", value: 20},
+					{name: "21-40", value: 10},
+					{name: "41-60", value: -5},
+					{name: "61-80", value: -15},
+					{name: "81-100", value: -30},
 				]);
 
 				self.selectedDamageModifier = ko.observable();
