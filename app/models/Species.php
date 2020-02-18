@@ -8,7 +8,7 @@ class Species extends Eloquent {
 	}
 
 	public function animatedSprite() {
-		if($this->id >= 810) return $this->sprite();
+		// if($this->id >= 810) return $this->sprite();
 		
 		return "https://play.pokemonshowdown.com/sprites/ani/".strtolower($this->name).".gif";
 	}

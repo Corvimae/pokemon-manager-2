@@ -24,13 +24,31 @@ class Type extends Eloquent {
 		array(1, 1, 0.5, 2, 1, 1, 0.5, 1, 1, 1, 1, 1, 1, 2, 1, 2, 0.5, 1)
 	);
 
+	public static $immuneAbilities = [
+		"Lightningrod" => "Electric",
+		"Dry Skin" => "Water",
+		"Flash Fire" => "Fire",
+		"Levitate" => "Ground",
+		"Motor Drive" => "Electric",
+		"Sap Sipper" => "Grass",
+		"Storm Drain" => "Water",
+		"Volt Absorb" => "Electric",
+		"Water Absorb" => "Water",
+	];
+
+	public static function getIdForName($name) {
+		$type = Type::where('name', '=', $name)->first();
+
+		return is_null($type) ? null : $type->id;
+	}
+
 	public function icon() {
 		return "/images/types/".strtolower($this->name).".png";
 	}
 
 	public function getOffensiveEffectiveness() {
 		$out = array("SE" => array(), "NVE" => array(), "Immune" => array());
-		if($this->id == 0) return $out;;
+		if($this->id == 0) return $out;
 		$row = Type::$typeChart[$this->id - 1];
 		for($i = 0; $i < count($row); $i++) {
 			if($row[$i] == 2) $out["SE"][$i + 1] = 2;
@@ -95,12 +113,13 @@ class Type extends Eloquent {
 
 	public function getDefensiveEffectiveness() {
 		$out = array("SE" => array(), "NVE" => array(), "Immune" => array());
-		if($this->id == 0) return $out;;
+		if($this->id == 0) return $out;
 		for($i = 0; $i < count(Type::$typeChart); $i++) {
 			if(Type::$typeChart[$i][$this->id - 1] == 2) $out["SE"][$i + 1] = 2;
 			if(Type::$typeChart[$i][$this->id - 1] == 0.5) $out["NVE"][$i + 1] = .5;
 			if(Type::$typeChart[$i][$this->id - 1] == 0) $out["Immune"][$i + 1] = 0;
 		}
+
 		return $out;
 	}
 
@@ -115,10 +134,11 @@ class Type extends Eloquent {
 		return $out;
 	}
 
-	public static function getCombinedDefensiveEffectiveness($type1, $type2) {
+	public static function getCombinedDefensiveEffectiveness($pokemon, $type1, $type2) {
 		$out = array("SE" => array(), "NVE" => array(), "Immune" => array());		
 		$e1 = $type1->getDefensiveEffectiveness();
 		$e2 = $type2->getDefensiveEffectiveness();
+
 		foreach($e1 as $k => $v) {
 			foreach($v as $ik => $iv) {
 				$out[$k][$ik] = !array_key_exists($ik, $out[$k]) ? $iv : $out[$k][$ik] * $iv;
@@ -138,6 +158,13 @@ class Type extends Eloquent {
 			}
 		}
 
+		foreach(Type::$immuneAbilities as $ability => $type) {
+			if ($pokemon->hasAbility($ability)) {
+				$out["Immune"][Type::getIdForName($type)] = 0;
+			}
+		}
+
+
 		foreach($out["Immune"] as $k => $v) {
 			if(array_key_exists($k, $out["SE"])) unset($out["SE"][$k]);
 			if(array_key_exists($k, $out["NVE"])) unset($out["NVE"][$k]);
@@ -146,8 +173,8 @@ class Type extends Eloquent {
 		return $out;
 	}
 
-	public static function getCombinedDefensiveEffectivenessStrings($type1, $type2) {
-		$in = Type::getCombinedDefensiveEffectiveness($type1, $type2);
+	public static function getCombinedDefensiveEffectivenessStrings($pokemon, $type1, $type2) {
+		$in = Type::getCombinedDefensiveEffectiveness($pokemon, $type1, $type2);
 		$out = array("SE" => array(), "NVE" => array(), "Immune" => array());
 		foreach($in as $k => $v) {
 			foreach($v as $ik => $iv) {

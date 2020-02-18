@@ -27,7 +27,7 @@ class Pokemon extends Eloquent {
 		return $this->hasMany('Ability');
 	}
 
-	public function capabilitieS() {
+	public function capabilities() {
 		return $this->hasMany("Capability")->orderBy("position");
 	}
 
@@ -50,8 +50,6 @@ class Pokemon extends Eloquent {
 	public function addStats() {
 		return $this->stats()->where('is_base', '=', '0')->first();
 	}
-
-
 
 	public function totalStats() {
 		$stats = new StatList();
@@ -103,20 +101,17 @@ class Pokemon extends Eloquent {
 	}
 
 	public function getCombinedDefensiveTypeEffectiveness() {
-		return Type::getCombinedDefensiveEffectiveness($this->type1(), $this->type2());
+		return Type::getCombinedDefensiveEffectiveness($this, $this->type1(), $this->type2());
 	}
 
 	public function getCombinedDefensiveTypeEffectivenessStrings() {
-		return Type::getCombinedDefensiveEffectivenessStrings($this->type1(), $this->type2());
+		return Type::getCombinedDefensiveEffectivenessStrings($this, $this->type1(), $this->type2());
 	}
-
 
 	public function getModifierForStat($stat) {
 		if($stat < 10) return (($stat + ($stat % 2) - 10)/2);
 		return ($stat - ($stat % 2) - 10)/2;
 	}
-
-
 
 	public function level() {
 		$xp = $this->experience;
@@ -131,6 +126,13 @@ class Pokemon extends Eloquent {
 		if(is_null($this->trainer())) return Campaign::find(0);
 		return $this->trainer()->campaign();
 	}
+
+	public function hasAbility($ability_name) {
+		return !$this->abilities()->get()->filter(function($ability) use ($ability_name) {
+			return $ability->definition()-> name == $ability_name;
+		})->isEmpty();
+	}
+
 	function calculatePTULevel($xp){
 	    if($xp < 0) return 0;
         if($xp < 10) return 1;
