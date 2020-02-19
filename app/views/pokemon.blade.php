@@ -11,6 +11,30 @@
 	<script src="/js/typeahead.bundle.js"></script>
 	<script src="/js/jquery-ui-1.10.4.custom.min.js"></script>
 	<script type="text/javascript">
+
+		const LEVELS = [
+			0, 25, 50, 100, 150,
+			200, 400, 600, 800, 1000,
+			1500, 2000, 3000, 4000, 5000,
+			6000, 7000, 8000, 9000, 10000,
+			11500, 13000, 14500, 16000, 17500,
+			19000, 20500, 22000, 23500, 25000,
+			27500, 30000, 32500, 35000, 37500,
+			40000, 42500, 45000, 47500, 50000,
+			55000, 60000, 65000, 70000, 75000,
+			80000, 85000, 90000, 95000, 100000,
+			110000, 120000, 130000, 140000, 150000,
+			160000, 170000, 180000, 190000, 200000,
+			210000, 220000, 230000, 240000, 250000,
+			260000, 270000, 280000, 290000, 300000,
+			310000, 320000, 330000, 340000, 350000,
+			360000, 370000, 380000, 390000, 400000,
+			410000, 420000, 430000, 440000, 450000,
+			460000, 470000, 480000, 490000, 500000,
+			510000, 520000, 530000, 540000, 550000,
+			560000, 570000, 580000, 590000, 600000
+		];
+
 		$(function() {
 			var id = {{$pkmn->id}};
 
@@ -470,12 +494,21 @@
 				self.nature = ko.observable("{{$pkmn->nature()->name}}");
 
 				self.level = ko.computed(function() {
-					var $xp = self.experience();
-					if(self.ruleset() == 1) return calculatePTULevel($xp);
-					return Math.min(100, 1+Math.floor($xp/25)*($xp<50)+2*($xp>=50)+Math.floor(($xp-50)/50)*($xp>50)*($xp<200)+3*($xp>=200)+Math.floor(($xp-200)/200)*($xp>200)*($xp<1000)+4*($xp>=1000)+Math.floor(($xp-1000)/500)*($xp>1000)*($xp<2000)+2*($xp>=2000)
-					+Math.floor(($xp-2000)/1000)*($xp>2000)*($xp<10000)+8*($xp>=10000)+Math.floor(($xp-10000)/1500)*($xp>10000)*($xp<25000)+10*($xp>=25000)+Math.floor(($xp-25000)/2500)*($xp>25000)*($xp<50000)+10*($xp>=50000)
-					+Math.floor(($xp-50000)/5000)*($xp>50000)*($xp<100000)+10*($xp>=100000)+Math.floor(($xp-100000)/10000)*($xp>100000));
+					var xp = self.experience();
+					if(self.ruleset() == 1) return calculatePTULevel(xp);
+					
+					const nextLevelRequirement = LEVELS.find(value => value > xp);
+
+					return nextLevelRequirement === -1 ? 100 : LEVELS.indexOf(nextLevelRequirement);
 				});
+
+				self.xpUntilNextLevel = ko.computed(function() {
+					var xp = self.experience();
+					if(self.ruleset() == 1) return -1;
+
+					return self.level() === 100 ? -1 : LEVELS[self.level()] - xp;
+				});
+				
 				function calculatePTULevel($xp){
 			        if($xp < 0) return 0;
 			        if($xp < 10) return 1;
@@ -1087,16 +1120,20 @@
 	<div class="popover" data-bind="with: $root.selectedMove">
 		<div class="popover-title" data-bind="text: title"></div>
 		<div class="popover-content">
-			<div class="move-info-row" data-bind="visible: category == 'move'"><b>Accuracy: </b><span data-bind="text: category == 'move' ? accuracy : ''"></span></div>
-			<div class="move-info-row" data-bind="visible: category == 'move'"><b>Range: </b><span data-bind="text: category == 'move' ? range : ''"></span></div>
-			<div class="move-info-row" data-bind="visible: (category == 'move' && attack_type != 2)"><b>Attack Type: </b><span data-bind="text: category == 'move' ? $root.parseMoveAttackType($data) : ''"></span></div>
-			<div class="move-info-row" data-bind="visible: category == 'move' && ($root.ruleset() == 0 ? damage != '-' : damage() != 0)"><b>Damage: </b><span data-bind="text: category == 'move' ? $root.parseMoveDamage($data) : ''"></span></div>
-			<div class="move-info-row" data-bind="visible: category == 'ability'"><b>Frequency: </b><span data-bind="text: category == 'ability' ? frequency : ''"></span></div>
+			<!-- ko if: category == 'move' -->
+			<div class="move-info-row"><b>Accuracy: </b><span data-bind="text: category == 'move' ? accuracy : ''"></span></div>
+			<div class="move-info-row"><b>Range: </b><span data-bind="text: category == 'move' ? range : ''"></span></div>
+			<div class="move-info-row" data-bind="visible: attack_type != 2"><b>Attack Type: </b><span data-bind="text: category == 'move' ? $root.parseMoveAttackType($data) : ''"></span></div>
+			<div class="move-info-row" data-bind="visible: ($root.ruleset() == 0 ? damage != '-' : damage() != 0)"><b>Damage: </b><span data-bind="text: category == 'move' ? $root.parseMoveDamage($data) : ''"></span></div>
+			<!-- /ko -->
+			<!-- ko if: category == 'ability' -->
+			<div class="move-info-row"><b>Frequency: </b><span data-bind="text: category == 'ability' ? frequency : ''"></span></div>
+			<!-- /ko -->
+			<!-- ko if: category == 'contest' -->
 			<div class="move-info-row" data-bind="visible: category == 'contest'"><b>Type: </b><span data-bind="text: category == 'contest' ? contest_type : ''"></span></div>
 			<div class="move-info-row" data-bind="visible: category == 'contest'"><b>Dice: </b><span data-bind="text: category == 'contest' ? dice + 'd6' : ''"></span></div>
-			<br>
-			<span data-bind="text: effect"></span>
-
+			<!-- /ko -->
+			<div class="move-info-effect" data-bind="html: effect"></div>
 		</div>
 	</div>
 	@if($isGM)
@@ -1152,16 +1189,28 @@
 	<div class="left-set">
 		<div class="pkmn-name name-row">
 			<div class="display-row">
-				<span class="name" data-bind="text: $root.name"></span><span class="level" data-bind="text: 'Level ' + $root.level()"> </span><div class="substat" data-bind="text: $root.experience() + ' XP'"></div>
-				<div class="edit-gear" id="editGear" data-bind="click: $root.toggleOptionsPanel"><i class="fa fa-cog"></i></div>
-				<div class="edit-notes" id="editNotes" data-bind="click: $root.toggleNotesPanel"><i class="fa fa-file-text"></i></div>
-				<div class="notification-alert hideOnLoad" data-bind="visible: $root.showNotificationAlert, css: {'hideOnLoad': false}"><i class="fa fa-exclamation"></i></div>
+				<span class="name" data-bind="text: $root.name"></span>
+				<div class="name-row-right-content">
+					<span class="level">
+						<span data-bind="text: 'Level ' + $root.level()"></span>
+						<span class="substat">
+							<span data-bind="text: $root.experience() + ' XP'"></span>
+							<span class="xp-to-next-level" data-bind="visible: $root.xpUntilNextLevel() !== -1, text: '(' + $root.xpUntilNextLevel() + ' XP until level ' + ($root.level() + 1) + ')'"></span>
+						</span>
+					</span>
+					<div class="edit-gear" id="editGear" data-bind="click: $root.toggleOptionsPanel"><i class="fa fa-cog"></i></div>
+					<div class="edit-notes" id="editNotes" data-bind="click: $root.toggleNotesPanel"><i class="fa fa-file-text"></i></div>
+					<div class="notification-alert hideOnLoad" data-bind="visible: $root.showNotificationAlert, css: {'hideOnLoad': false}"><i class="fa fa-exclamation"></i></div>
+				</div>
 			</div>
 			<div class="edit-row">
 				<input class='stat-input name-input' id='nameEdit' data-bind="value: $root.name">
 				<div class='species-input-shell'><input class='stat-input species-input' id='speciesEdit' value="{{$pkmn->species()->name}}"></div>
 				<span class="level edit-level" data-bind="text: 'Level ' + $root.level()"></span>
-				<div class="substat"><input class='stat-input xp-input' id="setXP" data-bind="value: $root.experience"> XP</div>
+				<div class="substat">
+					<input class='stat-input xp-input' id="setXP" data-bind="value: $root.experience"> XP
+					<span class="xp-to-next-level" data-bind="visible: $root.xpUntilNextLevel() !== -1, text: '(' + $root.xpUntilNextLevel() + ' away)'"></span>
+				</div>
 			</div>
 		</div>
 		<div class="stat-row" data-bind="click: $root.goToOwner"><div class="row-title">Owner</div> <div class="row-content" data-bind="text: $root.owner()"></div></div>

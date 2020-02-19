@@ -160,6 +160,32 @@ a {
 	font-size: 24px;
 }
 
+.trainer-quick-access-list {
+	list-style: none;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	margin: 0;
+	padding: 0;
+}
+
+.trainer-quick-access-list .pkmn-record-shell {
+	height: auto;
+	width: auto;
+	padding: 5px;
+	box-sizing: border-box;
+}
+
+.trainer-quick-access-list a {
+	position: unset;
+	display: block;
+	height: auto;
+	padding: 4px 8px;
+	width: auto;
+	color: #000;
+	text-decoration: none;
+}
+
 body {
 	padding: 0 0;
 	margin: 0 0;
@@ -318,10 +344,7 @@ body {
 	color: #fff;
 	font-size: 24px;
 	cursor: pointer;
-	top: 7px;
-	position: absolute;
-	left: 435px;
-	display: inline-block;
+	margin: 0 12px 0 16px;
 	text-shadow: 0px -1px 0px #000;
 }
 
@@ -336,10 +359,6 @@ body {
 	color: #fff;
 	font-size: 24px;
 	cursor: pointer;
-	top: 7px;
-	position: absolute;
-	left: 405px;
-	display: inline-block;
 	text-shadow: 0px -1px 0px #000;
 }
 
@@ -621,7 +640,7 @@ input:-webkit-autofill {
 }
 
 .edit-level {
-	margin-left: 96px;
+	margin-left: 40px;
 }
 
 .mod-stage {
@@ -746,18 +765,6 @@ input:-webkit-autofill {
 	line-height: 35px;
 }
 
-.pkmn-name .name {
-	display: inline-block;
-	width: 450px;
-	height: 30px;
-}
-
-.pkmn-name .level {
-	position: relative;
-	height: 30px;
-	display: inline-block;
-}
-
 .left-set {
 	float: left;
 	width: 750px;
@@ -797,6 +804,10 @@ input:-webkit-autofill {
 	font-weight: bold;
 	font-size: 16px;
 	width: 100px;
+}
+
+.move-info-effect:not(:only-child) {
+	margin-top: 8px;
 }
 
 .sidebar {
@@ -1442,11 +1453,33 @@ input:-webkit-autofill {
 	padding-left: 20px;
 	font-size: 20px;
 	position: relative;
-
 }
 
 .pkmn-name {
 	width: 700px;
+}
+
+.pkmn-name .display-row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding-right: 62px;
+}
+
+.pkmn-name .substat {
+	margin-left: 8px;
+}
+
+.xp-to-next-level {
+	font-size: 0.75rem;
+	margin-left: 2px;
+}
+
+.name-row-right-content {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-left: auto;
 }
 
 #gm-notes {

@@ -99,6 +99,17 @@
 	@endif
 	<div class="stat-row"><div class="row-title">You have {{ count($user->pokemon()->get()) }} Pokemon across {{ count($user->trainers()->get()) }} Trainers.</div></div>
 	
+	@if($user->isGM())
+	<div class="pkmn-records trainer-quick-access">
+		<div class="stat-row header-row trainer-name"><div class="row-title">Trainer Quick Access</div></div>
+			<ul class="trainer-quick-access-list" data-bind="foreach: $root.trainerList">
+			<li class="pkmn-record-shell">
+				<a class="pkmn-record-shell-inner" data-bind="attr: { 'href': '/trainer/' + id }, text: name"></a>
+			</li>
+		</ul>
+	</div>
+	@endif
+
 	<!-- ko foreach: $root.trainerList -->
 		<div class="pkmn-records" data-bind="attr: {'data-id': id }">
 			<div class="stat-row header-row trainer-name" data-bind="click: $root.goToTrainer"><div class="row-title" data-bind="text: name"></div></div>
