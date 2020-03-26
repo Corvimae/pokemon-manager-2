@@ -2,6 +2,8 @@
 class EditApiController extends BaseController {
 
 	public static function validatePokemon($user, $pkmn) {
+    if (is_null($user) || is_null($pkmn)) return false;
+
 		return ($pkmn->user_id == $user->id || $user->isSpecificGM($pkmn->campaign()->id ?? -1));
 	}
 
@@ -276,7 +278,19 @@ class EditApiController extends BaseController {
 		$pkmn->gm_notes = $val;
 		$pkmn->save();
 		return Response::json("GM Notes update successful");
-	}	
+  }	
+  
+  public function updateCapabilityValue($id, $capabilityId, $val) {
+    $user = Auth::user();
+		$pkmn = Pokemon::find($id);
+    if(!EditApiController::validatePokemon($user, $pkmn)) return Response::json("Ownership mismatch");
+   
+    $capability = Capability::find($capabilityId);
+    $capability->value = $val;
+    $capability->timestamps = false;
+    $capability->save();
+    return Response::json("Capability value update successful");
+  }
 
 	public function updateActive($id, $val) {
 		$user = Auth::user();

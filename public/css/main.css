@@ -228,8 +228,8 @@ body {
 
 .notification-alert {
 	position: absolute;
-	left: 447px;
-	top: 2px;
+  right: 2px;
+  top: -10px;
 	color: #DD8392;
 	text-shadow: 0px 1px 0px #000;
 	pointer-events: none;
@@ -341,6 +341,7 @@ body {
 }
 
 .edit-gear {
+  position: relative;
 	color: #fff;
 	font-size: 24px;
 	cursor: pointer;

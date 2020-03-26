@@ -1,7 +1,11 @@
 <?php
 
 class Trainer extends Eloquent {
-	protected $table = 'player_trainers';
+  protected $table = 'player_trainers';
+  
+  public static $frontendFeatures = [
+    'Enduring Soul' => ['pressOn']
+  ];
 
 	public function pokemon() {
 		return $this->hasMany('Pokemon')->orderBy("position");
@@ -25,7 +29,7 @@ class Trainer extends Eloquent {
 
 	public function belongsToGame($game) {
 		return $this->campaign()->id == $game;
-	}
+  }
 }
 
 ?>

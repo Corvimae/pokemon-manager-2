@@ -17,3 +17,15 @@ spec:
       - backend:
           serviceName: pokemon-manager-service
           servicePort: 80
+      - path: /pokemon
+        backend:
+          serviceName: pokemon-manager-viewer-service
+          servicePort: 3000
+      - path: /pokemon/new
+        backend:
+          serviceName: pokemon-manager-service
+          servicePort: 80
+      - path: /_next
+        backend:
+          serviceName: pokemon-manager-viewer-service
+          servicePort: 3000

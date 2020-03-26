@@ -614,7 +614,7 @@
 			}	
 				self.currentHealth = ko.observable({{$pkmn->current_health}});
 
-				self.notes = ko.observable('{{addslashes(str_replace("\n","\\n",$pkmn->notes))}}');
+				self.notes = ko.observable('{{str_replace("\n","\\n",$pkmn->notes)}}');
 
 				self.owner = ko.observable("{{is_null($pkmn->trainer()) ? $pkmn->owner()->username : $pkmn->trainer()->name}}");
 				self.ownerID = ko.observable("{{is_null($pkmn->trainer()) ? $pkmn->owner()->id : $pkmn->trainer()->id}}");
@@ -1198,9 +1198,13 @@
 							<span class="xp-to-next-level" data-bind="visible: $root.xpUntilNextLevel() !== -1, text: '(' + $root.xpUntilNextLevel() + ' XP until level ' + ($root.level() + 1) + ')'"></span>
 						</span>
 					</span>
-					<div class="edit-gear" id="editGear" data-bind="click: $root.toggleOptionsPanel"><i class="fa fa-cog"></i></div>
+					<div class="edit-gear" id="editGear" data-bind="click: $root.toggleOptionsPanel">
+						<i class="fa fa-cog"></i>
+						<div class="notification-alert hideOnLoad" data-bind="visible: $root.showNotificationAlert, css: {'hideOnLoad': false}">
+							<i class="fa fa-exclamation"></i>
+						</div>
+					</div>
 					<div class="edit-notes" id="editNotes" data-bind="click: $root.toggleNotesPanel"><i class="fa fa-file-text"></i></div>
-					<div class="notification-alert hideOnLoad" data-bind="visible: $root.showNotificationAlert, css: {'hideOnLoad': false}"><i class="fa fa-exclamation"></i></div>
 				</div>
 			</div>
 			<div class="edit-row">

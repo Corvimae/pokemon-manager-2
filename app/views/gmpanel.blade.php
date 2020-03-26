@@ -194,7 +194,7 @@
 			<div class="panel-title" style="margin-bottom: 10px">User Data</div>
 				@foreach(DB::table('player_pokemon_data')->select('user_id')->distinct()->get() as $p)
 					<?php $activeUser = User::find($p["user_id"]); ?>
-					@if($activeUser->belongsToGame($game)) <div class="stat-row gm-user-row"><a href='/user/{{$activeUser->id}}'>{{$activeUser->username}}</a></div> @endif
+					@if(isset($activeUser) && $activeUser->belongsToGame($game)) <div class="stat-row gm-user-row"><a href='/user/{{$activeUser->id}}'>{{$activeUser->username}}</a></div> @endif
 				@endforeach
 		</div>
 	</div>

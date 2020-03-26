@@ -85,8 +85,7 @@ Route::get('login', array('uses' => 'HomeController@showLogin'));
 Route::post('login', array('uses' => 'HomeController@doLogin'));
 Route::post('createAccount', array('uses' => 'HomeController@createAccount'));
 
-Route::group(array('prefix' => 'api/v1',), function() {
-
+Route::group(array('prefix' => 'api/v1'), function() {
 	Route::get('/campaign/search', 'HomeController@searchCampaigns');
 	Route::post('/campaign/{campaign}/formulas/update', 'EditApiController@updateCampaignFormulas');
 	Route::post('/campaign/{campaign}/setting/ptu/update', 'EditApiController@updateCampaignSetIsPTU');
@@ -99,6 +98,8 @@ Route::group(array('prefix' => 'api/v1',), function() {
 	Route::any('/abilities/{id?}/', 'DefinitionApiController@getAbility');
 	Route::any('/helditems/{id?}/', 'DefinitionApiController@getHeldItem');
 
+	Route::any('/pokemon/{id}', 'DataApiController@getPokemonInfo');
+  
 	Route::any('/pokemon/{id}/update/health/{val}', 'EditApiController@updateHealth');
 	Route::any('/pokemon/{id}/update/name/{val}', 'EditApiController@updateName');
 	Route::any('/pokemon/{id}/update/legacy/{val}', 'EditApiController@updateLegacy');
@@ -114,6 +115,7 @@ Route::group(array('prefix' => 'api/v1',), function() {
 	Route::any('/pokemon/{id}/update/trainer/{trainer}', 'EditApiController@setPokemonTrainer');
 	Route::any('/pokemon/{id}/update/helditem/{val}', 'EditApiController@updateHeldItem');
 	Route::any('/pokemon/{id}/update/gmnotes/{val}', 'EditApiController@updateGMNotes');
+	Route::any('/pokemon/{id}/update/capability/{capabilityId}/{val}', 'EditApiController@updateCapabilityValue');
 	Route::any('/pokemon/{id}/insert/ability/{val}', 'EditApiController@insertAbility');
 	Route::any('/pokemon/{id}/remove/ability/{val}', 'EditApiController@removeAbility');
 	Route::any('/pokemon/{id}/insert/move/{val}', 'EditApiController@insertMove');
@@ -140,6 +142,39 @@ Route::group(array('prefix' => 'api/v1',), function() {
 	
 	Route::post('/gm/motd', 'HomeController@setMOTD');
 	Route::post('/pokemon/{id}/update/notes', 'EditApiController@setNotes');
-
 });
 
+Route::group(['prefix' => 'api/v2'], function() {
+  Route::get('/types', 'DefinitionApiController@getTypes');
+  Route::get('/natures', 'DefinitionApiController@getNatureOptions');
+  Route::get('/abilities', 'DefinitionApiController@getAbilityOptions');
+  Route::get('/heldItems', 'DefinitionApiController@getHeldItemOptions');
+  Route::get('/capabilities', 'DefinitionApiController@getCapabilityOptions');
+  Route::get('/moves', 'DefinitionApiController@getMoveOptions');
+  Route::get('/species', 'DefinitionApiController@getSpeciesOptions');
+  Route::get('/trainers/{id}', 'DefinitionApiController@getTrainerOptions');
+
+  Route::get('/pokemon/{id}/allies', 'DataApiController@getOtherTrainerPokemon');
+  Route::any('/pokemon/{id}/move/{moveId}', 'DefinitionApiController@getMove');
+
+  Route::any('/pokemon/{id}/types/{position}/{typeId}', 'PokemonAPIController@setType');
+  Route::any('/pokemon/{id}/active/{active}', 'PokemonAPIController@setActive');
+  Route::any('/pokemon/{id}/name/{value}', 'PokemonAPIController@setName');
+  Route::any('/pokemon/{id}/owner/{value}', 'PokemonAPIController@setOwner');
+  Route::any('/pokemon/{id}/species/{speciesId}', 'PokemonAPIController@setSpecies');
+  Route::any('/pokemon/{id}/gender/{value}', 'PokemonAPIController@setGender');
+  Route::any('/pokemon/{id}/loyalty/{value}', 'PokemonAPIController@setLoyalty');
+  Route::any('/pokemon/{id}/experience/{experience}', 'PokemonAPIController@setExperience');
+  Route::any('/pokemon/{id}/stats/{stat}/base/{val}', 'PokemonAPIController@updateBaseStat');
+  Route::any('/pokemon/{id}/stats/{stat}/added/{val}', 'PokemonAPIController@updateAddedStat');
+  Route::post('/pokemon/{id}/notes', 'PokemonAPIController@updateNotes');
+  Route::post('/pokemon/{id}/gmNotes', 'PokemonAPIController@updateGMNotes');
+
+  Route::any('/pokemon/{id}/moves/add/{moveId}', 'MoveAPIController@addMove');
+  Route::any('/pokemon/{id}/moves/delete/{moveInstanceId}', 'MoveAPIController@deleteMove');
+  Route::any('/pokemon/{id}/moves/{moveInstanceId}/ppUp/{value}', 'MoveAPIController@setPPUp');
+  Route::any('/pokemon/{id}/moves/{moveInstanceId}/type/{typeId}', 'MoveAPIController@setMoveType');
+  Route::any('/pokemon/{id}/moves/{moveInstanceId}/order/{value}', 'MoveAPIController@setMoveOrder');
+
+  Route::any('/pokemon/{id}/capabilities/{capabilityInstanceId}/order/{value}', 'CapabilityAPIController@setCapabilityOrder');
+});

@@ -12,13 +12,20 @@
 */
 
 App::before(function($request) {
-	Request::setTrustedProxies([$request->getClientIp()]);
+  $origin = getenv('ALLOWED_ORIGIN', true) ?: getenv('ALLOWED_ORIGIN');
+
+  Request::setTrustedProxies([$request->getClientIp()]);
+  
+	header('Access-Control-Allow-Origin: '.($origin ?: '*'));
+	header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+	header('Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Request-With, userToken, user_token');
+	header('Access-Control-Allow-Credentials: true');
 });
 
 
 App::after(function($request, $response)
 {
-	//
+
 });
 
 /*
