@@ -22,6 +22,34 @@ class DefinitionApiController extends BaseController {
     }));
   }
 
+  
+  public function getAllMoves() {
+    return MoveDefinition::all()->map(function ($definition) {
+      return [
+        'id' => $definition->id,
+        'name' => $definition->name,
+        'type' => $definition->type,
+        'frequency' => $definition->frequency,
+        'range' => $definition->attack_range,
+        'damage' => $definition->damage,
+        'accuracy' => $definition->ac,
+        'attackType' => $definition->attack_type,
+        'effects' => $definition->effects
+      ];
+    });
+  }
+  
+  public function getAllSpecies() {
+    return Species::all()->map(function ($definition) {
+      return [
+        'id' => $definition->id,
+        'name' => $definition->name,
+        'sprite' => $definition->sprite(),
+        'animatedSprite' => $definition->animatedSprite()
+      ];
+    });
+  }
+
   public function getSpeciesOptions() {
     $query = strtolower(Input::get('query'));
 

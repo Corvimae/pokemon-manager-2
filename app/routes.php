@@ -145,13 +145,16 @@ Route::group(array('prefix' => 'api/v1'), function() {
 });
 
 Route::group(['prefix' => 'api/v2'], function() {
+  Route::get('/authStatus', 'HomeController@isLoggedIn');
   Route::get('/types', 'DefinitionApiController@getTypes');
   Route::get('/natures', 'DefinitionApiController@getNatureOptions');
   Route::get('/abilities', 'DefinitionApiController@getAbilityOptions');
   Route::get('/heldItems', 'DefinitionApiController@getHeldItemOptions');
   Route::get('/capabilities', 'DefinitionApiController@getCapabilityOptions');
   Route::get('/moves', 'DefinitionApiController@getMoveOptions');
+  Route::get('/moves/all', 'DefinitionApiController@getAllMoves');
   Route::get('/species', 'DefinitionApiController@getSpeciesOptions');
+  Route::get('/species/all', 'DefinitionApiController@getAllSpecies');
   Route::get('/trainers/{id}', 'DefinitionApiController@getTrainerOptions');
 
   Route::get('/pokemon/{id}/allies', 'DataApiController@getOtherTrainerPokemon');

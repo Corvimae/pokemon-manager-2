@@ -120,4 +120,10 @@ class HomeController extends BaseController {
 		return Redirect::to('login');
 	}
 
+
+  public function isLoggedIn() {
+    $user = Auth::user();
+
+    return Response::json(isset($user));
+  }
 }
