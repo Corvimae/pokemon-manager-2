@@ -160,5 +160,25 @@
 
       return Response::json("Successfully updated Pokémon GM notes.");
     }
+
+    public function updateCombatStage($id, $stat, $val) {
+      $user = Auth::user();
+      $pkmn = Pokemon::find($id);
+      if(!EditApiController::validatePokemon($user, $pkmn)) return Response::json("Ownership mismatch");
+      $combatStages = $pkmn->combatStages();
+      $combatStages->timestamps = false;
+  
+      switch($stat) {
+        case "attack": $combatStages->attack = $val; break;
+        case "defense": $combatStages->defense = $val; break;
+        case "spattack": $combatStages->spattack = $val; break;
+        case "spdefense": $combatStages->spdefense = $val; break;
+        case "speed": $combatStages->speed = $val; break;
+      }
+
+      $combatStages->save();
+
+      return Response::json("Combat stages update successful");
+    }
   }
 ?>

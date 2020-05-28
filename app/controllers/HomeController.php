@@ -30,7 +30,11 @@ class HomeController extends BaseController {
 		$add = new StatList;
 		$add->pokemon_id = $pkmn->id;
 		$add->timestamps = false;
-		$add->save();
+    $add->save();
+    
+    $combatStages = new CombatStages;
+    $combatStages->pokemon_id = $pkmn->id;
+    $combatStages->save();
 
 		return Redirect::to('/pokemon/'.$pkmn->id);
 	}
@@ -44,7 +48,6 @@ class HomeController extends BaseController {
 				echo '&nbsp;&nbsp;&nbsp;&nbsp;'.$m->definition()->name.'<br>';
 			}
 		}
-
 	}
 
 	public function setMOTD() {

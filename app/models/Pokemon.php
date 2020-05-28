@@ -51,6 +51,23 @@ class Pokemon extends Eloquent {
 		return $this->stats()->where('is_base', '=', '0')->first();
 	}
 
+  public function combatStages() {
+    $combatStages = $this->hasOne('CombatStages')->get()->first();
+
+    if($combatStages == null) {
+      $combatStages = new CombatStages;
+      $combatStages->pokemon_id = $this->id;
+      $combatStages->attack = 0;
+      $combatStages->defense = 0;
+      $combatStages->spattack = 0;
+      $combatStages->spdefense = 0;
+      $combatStages->speed = 0;
+      $combatStages->timestamps = false;
+      $combatStages->save();
+    }
+
+    return $combatStages;
+  }
 	public function totalStats() {
 		$stats = new StatList();
 		$stats->hp = $this->baseStats()->hp + $this->addStats()->hp;

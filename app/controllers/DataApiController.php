@@ -12,7 +12,8 @@ class DataApiController extends BaseController {
 		$species = $pokemon->species();
 		$campaign = $pokemon->campaign();
 		$baseStats = $pokemon->baseStats();
-		$addedStats = $pokemon->addStats();
+    $addedStats = $pokemon->addStats();
+    $combatStages = $pokemon->combatStages();
 
 		return Response::json([
       'id' => $pokemon->id,
@@ -63,7 +64,14 @@ class DataApiController extends BaseController {
 					'spattack' => $addedStats->spattack,
 					'spdefense' => $addedStats->spdefense,
 					'speed' => $addedStats->speed
-				]
+        ],
+        'combatStages' => [
+          'attack' => $combatStages->attack,
+          'defense' => $combatStages->defense,
+          'spattack' => $combatStages->spattack,
+          'spdefense' => $combatStages->spdefense,
+          'speed' => $combatStages->speed
+        ]
 			],
 			'species' => [
 				'id' => $species->id,

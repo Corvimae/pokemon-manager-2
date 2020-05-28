@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserMessagesTable extends Migration {
+class AddActiveToTrainers extends Migration {
 	/**
 	 * Run the migrations.
 	 *

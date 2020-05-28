@@ -170,6 +170,7 @@ Route::group(['prefix' => 'api/v2'], function() {
   Route::any('/pokemon/{id}/experience/{experience}', 'PokemonAPIController@setExperience');
   Route::any('/pokemon/{id}/stats/{stat}/base/{val}', 'PokemonAPIController@updateBaseStat');
   Route::any('/pokemon/{id}/stats/{stat}/added/{val}', 'PokemonAPIController@updateAddedStat');
+  Route::any('/pokemon/{id}/combatStage/{stat}/{val}', 'PokemonAPIController@updateCombatStage');
   Route::post('/pokemon/{id}/notes', 'PokemonAPIController@updateNotes');
   Route::post('/pokemon/{id}/gmNotes', 'PokemonAPIController@updateGMNotes');
 
